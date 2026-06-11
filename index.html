@@ -5,81 +5,78 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>午餐吃啥？｜聯合報大樓周邊</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@400;600;700&display=swap');
-  :root{--bg:#0f0e0d;--surface:#1a1917;--card:#222120;--border:#2e2c2a;--accent:#f5a623;--accent2:#e85d2f;--text-primary:#f0ede8;--text-secondary:#8a8580;--text-muted:#4a4845;--green:#4caf7d;--red:#e05252;--tag-bg:#2a2826}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text-primary);font-family:'Noto Sans TC',sans-serif;min-height:100vh;overflow-x:hidden}
-  header{padding:20px 24px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(15,14,13,0.94);backdrop-filter:blur(12px);z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .header-title{flex:1;min-width:200px}
-  .header-title h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1}
-  .header-title h1 span{color:var(--accent)}
-  .header-title p{font-size:.7rem;color:var(--text-secondary);margin-top:4px;letter-spacing:.04em}
-  .count-badge{background:var(--accent);color:#000;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.65rem;padding:2px 8px;border-radius:20px;display:inline-block;margin-left:8px;vertical-align:middle}
-  .random-btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:#000;border:none;padding:10px 20px;border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:transform .15s,box-shadow .15s;white-space:nowrap;letter-spacing:.02em}
-  .random-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,166,35,.3)}
-  .random-btn:active{transform:translateY(0)}
-  .filters{padding:12px 24px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
-  .filter-group{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-  .filter-label{font-size:.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:500;width:100%;margin-bottom:2px}
-  .filter-btn{background:var(--tag-bg);color:var(--text-secondary);border:1px solid var(--border);padding:4px 10px;border-radius:20px;font-family:'Noto Sans TC',sans-serif;font-size:.7rem;cursor:pointer;transition:all .15s;white-space:nowrap}
-  .filter-btn:hover{border-color:var(--accent);color:var(--accent)}
-  .filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
-  .filter-divider{width:1px;height:20px;background:var(--border);margin:0 2px;align-self:center}
-  .results-info{padding:10px 24px;font-size:.7rem;color:var(--text-muted);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
-  .results-info span{color:var(--accent);font-weight:700}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border)}
-  .card{background:var(--card);padding:18px;cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:9px}
-  .card:hover{background:#2a2826}
-  .card.hidden{display:none}
-  .card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-  .card-name{font-size:.95rem;font-weight:700;line-height:1.3;flex:1}
-  .rating-badge{background:var(--tag-bg);border:1px solid var(--border);border-radius:6px;padding:4px 7px;text-align:center;flex-shrink:0}
-  .rating-number{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:var(--accent);display:block;line-height:1}
-  .rating-count{font-size:.55rem;color:var(--text-muted);display:block;margin-top:2px}
-  .card-tags{display:flex;flex-wrap:wrap;gap:4px}
-  .tag{font-size:.62rem;padding:2px 7px;border-radius:4px;font-weight:500;letter-spacing:.02em;white-space:nowrap}
-  .tag-cuisine{background:rgba(245,166,35,.12);color:var(--accent);border:1px solid rgba(245,166,35,.2)}
-  .tag-price-1{background:rgba(76,175,125,.12);color:var(--green);border:1px solid rgba(76,175,125,.2)}
-  .tag-price-2{background:rgba(245,166,35,.12);color:var(--accent);border:1px solid rgba(245,166,35,.2)}
-  .tag-price-3{background:rgba(232,93,47,.12);color:var(--accent2);border:1px solid rgba(232,93,47,.2)}
-  .tag-price-4{background:rgba(224,82,82,.12);color:var(--red);border:1px solid rgba(224,82,82,.2)}
-  .tag-price-unknown{background:rgba(255,255,255,.03);color:var(--text-muted);border:1px solid var(--border)}
-  .distance-tag{font-size:.62rem;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
-  .open-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px;vertical-align:middle}
-  .open-dot.open{background:var(--green)}
-  .open-dot.closed{background:var(--red)}
-  .card-hours{font-size:.68rem;color:var(--text-muted);line-height:1.4}
-  .card-review{font-size:.7rem;color:var(--text-secondary);line-height:1.5;border-left:2px solid var(--border);padding-left:8px;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .gmaps-link{font-size:.62rem;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:3px;margin-top:2px;opacity:.7;transition:opacity .15s}
-  .gmaps-link:hover{opacity:1}
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:center;justify-content:center;padding:20px}
-  .modal-overlay.show{display:flex}
-  .modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:460px;width:100%;position:relative;animation:modalIn .25s cubic-bezier(.34,1.56,.64,1)}
-  @keyframes modalIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-  .modal-close{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;transition:color .15s}
-  .modal-close:hover{color:var(--text-primary)}
-  .modal-eyebrow{font-size:.62rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:6px}
-  .modal-name{font-size:1.5rem;font-weight:900;line-height:1.2;margin-bottom:14px}
-  .modal-details{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
-  .modal-row{display:flex;align-items:flex-start;gap:8px;font-size:.78rem;color:var(--text-secondary)}
-  .modal-row-label{color:var(--text-muted);font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;min-width:42px;margin-top:1px}
-  .modal-review{background:var(--bg);border-radius:8px;padding:11px 13px;font-size:.72rem;color:var(--text-secondary);line-height:1.6;font-style:italic;margin-bottom:18px}
-  .modal-actions{display:flex;gap:8px}
-  .modal-btn{flex:1;padding:10px 14px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;border:none;font-family:'Noto Sans TC',sans-serif}
-  .modal-btn.primary{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:#000}
-  .modal-btn.secondary{background:var(--tag-bg);border:1px solid var(--border);color:var(--text-secondary)}
-  .modal-btn:hover{opacity:.85}
-  .empty-state{display:none;text-align:center;padding:60px 24px;color:var(--text-muted);grid-column:1/-1}
-  .empty-state p{font-size:.85rem;margin-top:8px}
-  footer{padding:16px 24px;text-align:center;font-size:.62rem;color:var(--text-muted);border-top:1px solid var(--border)}
-  @media(max-width:600px){header{padding:14px};.filters{padding:10px 14px};.grid{grid-template-columns:1fr};.card{padding:15px};.modal{padding:22px 18px}}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@400;600;700&display=swap');
+:root{--bg:#0f0e0d;--surface:#1a1917;--card:#222120;--border:#2e2c2a;--accent:#f5a623;--accent2:#e85d2f;--text-primary:#f0ede8;--text-secondary:#8a8580;--text-muted:#4a4845;--green:#4caf7d;--red:#e05252;--tag-bg:#2a2826}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text-primary);font-family:'Noto Sans TC',sans-serif;min-height:100vh;overflow-x:hidden}
+header{padding:18px 24px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(15,14,13,0.95);backdrop-filter:blur(12px);z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.header-title{flex:1;min-width:200px}
+.header-title h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.2rem,4vw,1.8rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1}
+.header-title h1 span{color:var(--accent)}
+.header-title p{font-size:.68rem;color:var(--text-secondary);margin-top:4px;letter-spacing:.04em}
+.count-badge{background:var(--accent);color:#000;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.62rem;padding:2px 8px;border-radius:20px;display:inline-block;margin-left:8px;vertical-align:middle}
+.random-btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:#000;border:none;padding:9px 18px;border-radius:8px;font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:transform .15s,box-shadow .15s;white-space:nowrap}
+.random-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,166,35,.3)}
+.filters{padding:10px 24px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
+.filter-group{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.filter-label{font-size:.58rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;font-weight:500;width:100%;margin-bottom:2px}
+.filter-btn{background:var(--tag-bg);color:var(--text-secondary);border:1px solid var(--border);padding:4px 9px;border-radius:20px;font-family:'Noto Sans TC',sans-serif;font-size:.68rem;cursor:pointer;transition:all .15s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+.filter-divider{width:1px;height:18px;background:var(--border);margin:0 2px;align-self:center}
+.results-info{padding:8px 24px;font-size:.68rem;color:var(--text-muted);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.results-info span{color:var(--accent);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1px;background:var(--border)}
+.card{background:var(--card);padding:16px;cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:8px}
+.card:hover{background:#2a2826}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card-name{font-size:.9rem;font-weight:700;line-height:1.3;flex:1}
+.rating-badge{background:var(--tag-bg);border:1px solid var(--border);border-radius:6px;padding:3px 7px;text-align:center;flex-shrink:0}
+.rating-number{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;color:var(--accent);display:block;line-height:1}
+.rating-count{font-size:.52rem;color:var(--text-muted);display:block;margin-top:1px}
+.card-tags{display:flex;flex-wrap:wrap;gap:3px}
+.tag{font-size:.6rem;padding:2px 6px;border-radius:4px;font-weight:500;white-space:nowrap}
+.tag-cuisine{background:rgba(245,166,35,.12);color:var(--accent);border:1px solid rgba(245,166,35,.2)}
+.tag-price-1{background:rgba(76,175,125,.12);color:var(--green);border:1px solid rgba(76,175,125,.2)}
+.tag-price-2{background:rgba(245,166,35,.12);color:var(--accent);border:1px solid rgba(245,166,35,.2)}
+.tag-price-3{background:rgba(232,93,47,.12);color:var(--accent2);border:1px solid rgba(232,93,47,.2)}
+.tag-price-4{background:rgba(224,82,82,.12);color:var(--red);border:1px solid rgba(224,82,82,.2)}
+.tag-price-unknown{background:rgba(255,255,255,.03);color:var(--text-muted);border:1px solid var(--border)}
+.distance-tag{font-size:.6rem;padding:2px 6px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.open-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.open-dot.open{background:var(--green)}.open-dot.closed{background:var(--red)}
+.card-hours{font-size:.66rem;color:var(--text-muted);line-height:1.4}
+.card-review{font-size:.68rem;color:var(--text-secondary);line-height:1.5;border-left:2px solid var(--border);padding-left:7px;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gmaps-link{font-size:.6rem;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:2px;margin-top:1px;opacity:.7;transition:opacity .15s}
+.gmaps-link:hover{opacity:1}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;max-width:460px;width:100%;position:relative;animation:modalIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes modalIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-close{position:absolute;top:13px;right:13px;background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;transition:color .15s}
+.modal-close:hover{color:var(--text-primary)}
+.modal-eyebrow{font-size:.6rem;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:6px}
+.modal-name{font-size:1.45rem;font-weight:900;line-height:1.2;margin-bottom:13px}
+.modal-details{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.modal-row{display:flex;align-items:flex-start;gap:8px;font-size:.76rem;color:var(--text-secondary)}
+.modal-row-label{color:var(--text-muted);font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;min-width:40px;margin-top:1px}
+.modal-review{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:.7rem;color:var(--text-secondary);line-height:1.6;font-style:italic;margin-bottom:16px}
+.modal-actions{display:flex;gap:8px}
+.modal-btn{flex:1;padding:9px 12px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .15s;border:none;font-family:'Noto Sans TC',sans-serif}
+.modal-btn.primary{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:#000}
+.modal-btn.secondary{background:var(--tag-bg);border:1px solid var(--border);color:var(--text-secondary)}
+.modal-btn:hover{opacity:.85}
+.empty-state{display:none;text-align:center;padding:60px 24px;color:var(--text-muted);grid-column:1/-1}
+.empty-state p{font-size:.85rem;margin-top:8px}
+footer{padding:14px 24px;text-align:center;font-size:.6rem;color:var(--text-muted);border-top:1px solid var(--border)}
+@media(max-width:600px){header{padding:12px 16px}.filters{padding:10px 14px}.grid{grid-template-columns:1fr}.card{padding:14px}.modal{padding:20px 16px}}
 </style>
 </head>
 <body>
 <header>
   <div class="header-title">
     <h1>午餐<span>吃啥？</span> <span class="count-badge" id="totalCount">0</span></h1>
-    <p>📍 聯合報大樓周邊 · 忠孝東路四段555號 · 信義區</p>
+    <p>📍 聯合報大樓周邊（忠孝東路四段555號）· 信義區上班族午餐地圖</p>
   </div>
   <button class="random-btn" onclick="pickRandom()">🎲 隨機抽一間</button>
 </header>
@@ -90,7 +87,10 @@
     <button class="filter-btn active" data-filter="cuisine" data-value="all" onclick="setFilter('cuisine','all',this)">全部</button>
     <button class="filter-btn" data-filter="cuisine" data-value="台式小吃" onclick="setFilter('cuisine','台式小吃',this)">台式小吃</button>
     <button class="filter-btn" data-filter="cuisine" data-value="便當" onclick="setFilter('cuisine','便當',this)">便當</button>
+    <button class="filter-btn" data-filter="cuisine" data-value="水餃鍋貼" onclick="setFilter('cuisine','水餃鍋貼',this)">水餃鍋貼</button>
+    <button class="filter-btn" data-filter="cuisine" data-value="炒飯炒麵" onclick="setFilter('cuisine','炒飯炒麵',this)">炒飯炒麵</button>
     <button class="filter-btn" data-filter="cuisine" data-value="牛肉麵" onclick="setFilter('cuisine','牛肉麵',this)">牛肉麵</button>
+    <button class="filter-btn" data-filter="cuisine" data-value="拉麵" onclick="setFilter('cuisine','拉麵',this)">拉麵</button>
     <button class="filter-btn" data-filter="cuisine" data-value="日式" onclick="setFilter('cuisine','日式',this)">日式</button>
     <button class="filter-btn" data-filter="cuisine" data-value="韓式" onclick="setFilter('cuisine','韓式',this)">韓式</button>
     <button class="filter-btn" data-filter="cuisine" data-value="義式" onclick="setFilter('cuisine','義式',this)">義式</button>
@@ -100,8 +100,9 @@
     <button class="filter-btn" data-filter="cuisine" data-value="西式" onclick="setFilter('cuisine','西式',this)">西式</button>
     <button class="filter-btn" data-filter="cuisine" data-value="創意料理" onclick="setFilter('cuisine','創意料理',this)">創意料理</button>
     <button class="filter-btn" data-filter="cuisine" data-value="蔬食" onclick="setFilter('cuisine','蔬食',this)">蔬食</button>
-    <button class="filter-btn" data-filter="cuisine" data-value="自助" onclick="setFilter('cuisine','自助',this)">自助</button>
+    <button class="filter-btn" data-filter="cuisine" data-value="火鍋" onclick="setFilter('cuisine','火鍋',this)">火鍋</button>
     <button class="filter-btn" data-filter="cuisine" data-value="泰式" onclick="setFilter('cuisine','泰式',this)">泰式</button>
+    <button class="filter-btn" data-filter="cuisine" data-value="自助" onclick="setFilter('cuisine','自助',this)">自助</button>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
@@ -130,14 +131,9 @@
     <button class="filter-btn" data-filter="rating" data-value="3.5" onclick="setFilter('rating','3.5',this)">3.5+</button>
   </div>
 </div>
-
 <div class="results-info">顯示 <span id="visibleCount">0</span> 間餐廳</div>
-
-<div class="grid" id="grid">
-  <div class="empty-state" id="emptyState"><div style="font-size:2rem">🍽</div><p>沒有符合條件的餐廳，請調整篩選條件</p></div>
-</div>
-
-<footer>資料來源：Google Maps · 以聯合報大樓（忠孝東路四段555號）為圓心搜尋 · 距離為直線距離估算</footer>
+<div class="grid" id="grid"><div class="empty-state" id="emptyState"><div style="font-size:2rem">🍽</div><p>沒有符合條件的餐廳</p></div></div>
+<footer>資料來源：Google Maps · 以聯合報大樓（忠孝東路四段555號）為圓心 · 距離為直線距離估算 · 專為信義區上班族午餐設計</footer>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
@@ -156,121 +152,146 @@
 <script>
 const CENTER={lat:25.041554,lng:121.56303};
 function dist(a,b){const R=6371000,dL=(a-CENTER.lat)*Math.PI/180,dG=(b-CENTER.lng)*Math.PI/180,x=Math.sin(dL/2)**2+Math.cos(CENTER.lat*Math.PI/180)*Math.cos(a*Math.PI/180)*Math.sin(dG/2)**2;return Math.round(R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x)))}
-function todayHours(w){if(!w||!w.length)return null;const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],t=days[new Date().getDay()],e=w.find(h=>h.startsWith(t));return e?e.replace(t+': ',''):null}
-function isOpen(w){const h=todayHours(w);if(!h)return null;if(h==='Closed')return false;const now=new Date(),cur=now.getHours()*60+now.getMinutes();for(const r of h.split(', ')){const p=r.split('–').map(s=>s.trim());if(p.length<2)continue;const parse=s=>{const m=s.match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return null;let hr=parseInt(m[1]);const mn=parseInt(m[2]),ap=m[3].toUpperCase();if(ap==='PM'&&hr!==12)hr+=12;if(ap==='AM'&&hr===12)hr=0;return hr*60+mn};const s=parse(p[0]),e=parse(p[1]);if(s!==null&&e!==null&&cur>=s&&cur<e)return true}return false}
+function todayH(w){if(!w||!w.length)return null;const d=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],t=d[new Date().getDay()],e=w.find(h=>h.startsWith(t));return e?e.replace(t+': ',''):null}
+function isOpen(w){const h=todayH(w);if(!h)return null;if(h==='Closed')return false;const cur=new Date().getHours()*60+new Date().getMinutes();for(const r of h.split(', ')){const p=r.split('–').map(s=>s.trim());if(p.length<2)continue;const parse=s=>{const m=s.match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return null;let hr=parseInt(m[1]);const mn=parseInt(m[2]),ap=m[3].toUpperCase();if(ap==='PM'&&hr!==12)hr+=12;if(ap==='AM'&&hr===12)hr=0;return hr*60+mn};const s=parse(p[0]),e=parse(p[1]);if(s!==null&&e!==null&&cur>=s&&cur<e)return true}return false}
 function priceInfo(p){const t={1:'$ 平價',2:'$$ 中價',3:'$$$ 高檔',4:'$$$$ 奢華'};const c={1:'tag-price-1',2:'tag-price-2',3:'tag-price-3',4:'tag-price-4'};return p?{text:t[p]||'?',cls:c[p]||''}:{text:'未標示',cls:'tag-price-unknown'}}
 
 const DATA=[
-// ── 559巷/553巷 極近小吃街 ─────────────────────────────────────────
-{name:'味家路滷肉飯・米糕',lat:25.0424,lng:121.5638,r:3.8,rc:1427,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: 11:00 AM – 8:30 PM'],addr:'忠孝東路四段559巷18-1號',rev:'台式小吃老店，滷肉飯米糕蚵仔都有，超平價，上班族午餐必選。'},
-{name:'正德小吃店',lat:25.0423,lng:121.5631,r:4.1,rc:237,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 2:00 PM, 4:40 – 8:00 PM','Tuesday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Wednesday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Thursday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Friday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷6弄5號1樓',rev:'滷肉飯飄香、魯汁入味，65元就能吃飽，週末公休，巷弄裡的隱藏小吃。'},
-{name:'老哥（雞肉飯・乾拌麵）',lat:25.0420,lng:121.5637,r:3.9,rc:641,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:30 AM – 8:30 PM','Sunday: Closed'],addr:'忠孝東路四段559巷8-1號',rev:'雞肉飯、咖哩、乾拌麵都可口，附近上班族評價穩定，份量足。'},
-{name:'劉記客家小吃',lat:25.0421,lng:121.5644,r:4.4,rc:64,p:0,c:'台式小吃',w:['Monday: 11:00 AM – 6:00 PM','Tuesday: 11:00 AM – 6:00 PM','Wednesday: 11:00 AM – 6:00 PM','Thursday: 11:00 AM – 6:00 PM','Friday: 11:00 AM – 3:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄36號',rev:'客家小吃家常風，滷肉飯、炒青菜、肉骨麵，老闆熱情好客，周末公休。'},
-{name:'文創飲食亭',lat:25.0429,lng:121.5630,r:4.4,rc:148,p:0,c:'台式小吃',w:['Monday: 11:30 AM – 8:00 PM','Tuesday: 11:30 AM – 8:00 PM','Wednesday: 11:30 AM – 8:00 PM','Thursday: 11:30 AM – 8:00 PM','Friday: 11:30 AM – 8:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷16弄1-2號',rev:'重慶酸辣麵是招牌，排骨飯五道小菜份量實在，位在松菸旁，週末公休。'},
-{name:'港都旗魚米粉湯',lat:25.0422,lng:121.5644,r:3.9,rc:150,p:1,c:'台式小吃',w:['Monday: 11:30 AM – 7:30 PM','Tuesday: 11:30 AM – 7:30 PM','Wednesday: 11:30 AM – 7:30 PM','Thursday: 11:30 AM – 7:30 PM','Friday: 11:30 AM – 7:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄24號',rev:'現炸雞腿脆嫩多汁，米粉湯沙茶湯底鮮，百元以下的親民小吃，週末公休。'},
-{name:'福州乾拌麵',lat:25.0420,lng:121.5632,r:4.0,rc:770,p:1,c:'台式小吃',w:['Monday: 10:00 AM – 7:30 PM','Tuesday: 10:00 AM – 7:30 PM','Wednesday: 10:00 AM – 7:30 PM','Thursday: 10:00 AM – 7:30 PM','Friday: 10:00 AM – 7:30 PM','Saturday: 10:00 AM – 1:45 PM','Sunday: Closed'],addr:'忠孝東路四段553巷2弄9號',rev:'招牌紅油抄手麵是必點！乾麵Q彈，加醋加辣更對味，午餐時段超人氣。'},
-{name:'香港正宗廣居燒臘',lat:25.0424,lng:121.5641,r:3.9,rc:138,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 2:30 PM','Tuesday: 11:00 AM – 2:30 PM','Wednesday: 11:00 AM – 2:30 PM','Thursday: 11:00 AM – 2:30 PM','Friday: 11:00 AM – 2:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄11號',rev:'港式燒臘，烤鴨多汁皮酥，「三寶」套餐130元超划算，老闆廣東人，只開午餐。'},
-{name:'激饑商行（便當）',lat:25.0420,lng:121.5632,r:4.9,rc:48,p:0,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Tuesday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Wednesday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Thursday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Friday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷2弄7號',rev:'評分近滿分的隱藏便當！炸雞腿皮薄酥脆、滷肉燉到入味，配菜豐富，強烈推薦。'},
-{name:'鳳姐快餐便當',lat:25.0427,lng:121.5637,r:4.2,rc:486,p:1,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Tuesday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Wednesday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Thursday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Friday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Saturday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Sunday: Closed'],addr:'忠孝東路四段559巷22號',rev:'雞腿超美味，份量大，米飯湯飲自助補充，快速親民，週日公休。'},
-{name:'Aum Aum Dosirak 韓定食',lat:25.0423,lng:121.5643,r:4.7,rc:507,p:0,c:'便當',w:['Monday: 11:00 AM – 2:00 PM','Tuesday: 11:00 AM – 2:00 PM','Wednesday: 11:00 AM – 2:00 PM','Thursday: 11:00 AM – 2:00 PM','Friday: 11:00 AM – 2:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄18號1樓',rev:'韓式精緻便當11格，蒜香豆腐每次都讓人回訪，包裝精美，週一到週五午餐限定。'},
-{name:'Onigiri Planet 飯丸屋',lat:25.0424,lng:121.5638,r:4.6,rc:1005,p:0,c:'便當',w:['Monday: 8:00 AM – 8:00 PM','Tuesday: 8:00 AM – 8:00 PM','Wednesday: 8:00 AM – 8:00 PM','Thursday: 8:00 AM – 8:00 PM','Friday: 8:00 AM – 8:00 PM','Saturday: 9:00 AM – 8:00 PM','Sunday: 9:00 AM – 8:00 PM'],addr:'忠孝東路四段559巷16弄1號1樓',rev:'日式飯丸，米飯紮實粒粒分明，美式塔可碗、炸物配餐都很讚，全天候可買。'},
-{name:'兩隻小魚甜不辣 忠孝店',lat:25.0420,lng:121.5634,r:4.0,rc:61,p:0,c:'台式小吃',w:['Monday: 11:00 AM – 7:30 PM','Tuesday: 11:00 AM – 7:30 PM','Wednesday: 11:00 AM – 7:30 PM','Thursday: 11:00 AM – 7:30 PM','Friday: 11:00 AM – 7:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷2弄11號',rev:'咖哩豬排飯醬汁剛好，蝦仁甜不辣現炸脆口，百元以下，週末不開。'},
-{name:'韓明屋（平價韓食）',lat:25.0421,lng:121.5644,r:4.1,rc:108,p:1,c:'韓式',w:['Monday: 11:30 AM – 3:30 PM','Tuesday: 11:30 AM – 3:30 PM','Wednesday: 11:30 AM – 3:30 PM','Thursday: 11:30 AM – 3:30 PM','Friday: 11:30 AM – 3:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄36號',rev:'僅99元的韓式套餐，泡菜好吃，信義區難得平價韓食，只開平日午餐。'},
+// ═══ 水餃 / 鍋貼 ═══
+{name:'八方雲集 聯合報店',lat:25.0424,lng:121.5635,r:3.5,rc:477,p:1,c:'水餃鍋貼',w:['Monday: 10:00 AM – 8:00 PM','Tuesday: 10:00 AM – 8:00 PM','Wednesday: 10:00 AM – 8:00 PM','Thursday: 10:00 AM – 8:00 PM','Friday: 10:00 AM – 8:00 PM','Saturday: 10:00 AM – 8:00 PM','Sunday: 10:00 AM – 8:00 PM'],addr:'忠孝東路四段559巷7號',rev:'就在聯合報旁！水餃、乾拌麵、牛肉麵都有，全年無休，最方便的平價選擇。'},
+{name:'八方雲集 信義忠孝店',lat:25.0413,lng:121.5664,r:3.5,rc:989,p:1,c:'水餃鍋貼',w:['Monday: 10:30 AM – 11:00 PM','Tuesday: 10:30 AM – 11:00 PM','Wednesday: 10:30 AM – 11:00 PM','Thursday: 10:30 AM – 11:00 PM','Friday: 10:30 AM – 11:00 PM','Saturday: 10:30 AM – 11:00 PM','Sunday: 10:30 AM – 11:00 PM'],addr:'忠孝東路五段49號',rev:'八方雲集連鎖，水餃單顆點，豬肉高麗菜是招牌，附近上班族的快速午餐。'},
+{name:'八方雲集 忠孝五段店',lat:25.0402,lng:121.5717,r:3.2,rc:440,p:1,c:'水餃鍋貼',w:['Monday: 10:30 AM – 8:30 PM','Tuesday: 10:30 AM – 8:30 PM','Wednesday: 10:30 AM – 8:30 PM','Thursday: 10:30 AM – 8:30 PM','Friday: 10:30 AM – 8:30 PM','Saturday: 10:30 AM – 8:30 PM','Sunday: Closed'],addr:'忠孝東路五段236巷',rev:'八方雲集，水餃煎餃多種口味，CP值高的連鎖小吃，週日公休。'},
+{name:'巧之味手工水餃 永吉店',lat:25.0437,lng:121.5680,r:4.2,rc:923,p:1,c:'水餃鍋貼',w:['Monday: 11:00 AM – 3:00 PM, 5:00 – 7:30 PM','Tuesday: 11:00 AM – 3:00 PM, 5:00 – 7:30 PM','Wednesday: 11:00 AM – 3:00 PM, 5:00 – 7:30 PM','Thursday: 11:00 AM – 3:00 PM, 5:00 – 7:30 PM','Friday: 11:00 AM – 3:00 PM, 5:00 – 7:30 PM','Saturday: Closed','Sunday: Closed'],addr:'松隆路42號',rev:'手工水餃皮薄Q彈、干貝水餃是招牌，全台最好吃的水餃之一，週末公休。'},
+{name:'快樂餃 信義店',lat:25.0414,lng:121.5667,r:4.0,rc:1141,p:2,c:'水餃鍋貼',w:['Monday: 11:30 AM – 2:30 PM, 4:30 – 8:30 PM','Tuesday: 11:30 AM – 2:30 PM, 4:30 – 8:30 PM','Wednesday: 11:30 AM – 2:30 PM, 4:30 – 8:30 PM','Thursday: 11:30 AM – 2:30 PM, 4:30 – 8:30 PM','Friday: 11:30 AM – 2:30 PM, 4:30 – 8:30 PM','Saturday: 11:30 AM – 3:00 PM, 4:00 – 8:30 PM','Sunday: Closed'],addr:'忠孝東路五段59號',rev:'手工現包水餃、乾麵都精彩，食材新鮮清爽，周日公休，市政府站旁必訪。'},
+{name:'小樂天水餃',lat:25.0412,lng:121.5683,r:3.6,rc:2167,p:1,c:'水餃鍋貼',w:['Monday: 11:00 AM – 10:00 PM','Tuesday: 11:00 AM – 10:00 PM','Wednesday: 11:00 AM – 10:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: Closed'],addr:'忠孝東路五段151號1樓',rev:'鍋貼外酥內多汁，酸辣湯配著吃剛好，全天候供應，信義區極平價選擇。'},
+{name:'掌記大餛飩',lat:25.0410,lng:121.5568,r:3.7,rc:790,p:1,c:'水餃鍋貼',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: 11:00 AM – 8:30 PM'],addr:'忠孝東路四段308-1號',rev:'大顆餛飩是招牌，皮薄料多，麻辣紅油加上去更完美，超平價台式快食。'},
 
-// ── 日式 ──────────────────────────────────────────────────────────
-{name:'소풍 sopung 韓式料理',lat:25.0422,lng:121.5633,r:4.6,rc:582,p:0,c:'韓式',w:['Monday: 11:30 AM – 7:00 PM','Tuesday: 11:30 AM – 7:00 PM','Wednesday: Closed','Thursday: Closed','Friday: 11:30 AM – 7:00 PM','Saturday: 11:30 AM – 7:00 PM','Sunday: 11:30 AM – 7:00 PM'],addr:'忠孝東路四段553巷6弄12號',rev:'韓式料理，食材鮮、味道酸辣過癮，週三四公休要注意！'},
+// ═══ 炒飯 / 炒麵 ═══
+{name:'市政府流氓炒飯',lat:25.0421,lng:121.5657,r:4.3,rc:288,p:0,c:'炒飯炒麵',w:['Monday: 11:30 AM – 8:00 PM','Tuesday: 11:30 AM – 8:00 PM','Wednesday: 11:30 AM – 8:00 PM','Thursday: 11:30 AM – 8:00 PM','Friday: 11:30 AM – 8:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路五段15巷155號',rev:'櫻花蝦炒飯米粒粒分明，份量足夠，市政府站旁巷弄名店，週末公休。'},
+{name:'Chao Fan 炒飯 市政府店',lat:25.0420,lng:121.5644,r:4.4,rc:768,p:1,c:'炒飯炒麵',w:['Monday: 11:00 AM – 2:00 PM, 4:00 – 8:00 PM','Tuesday: 11:00 AM – 2:00 PM, 4:00 – 8:00 PM','Wednesday: 11:00 AM – 2:00 PM, 4:00 – 8:00 PM','Thursday: 11:00 AM – 2:00 PM, 4:00 – 8:00 PM','Friday: 11:00 AM – 2:00 PM, 4:00 – 8:00 PM','Saturday: 11:00 AM – 2:30 PM','Sunday: Closed'],addr:'基隆路一段190巷5號',rev:'炒飯鑊氣十足，紅油抄手也好吃，小店但回頭客超多，週日公休。'},
+{name:'炒飯炒麵便當（永吉巷）',lat:25.0446,lng:121.5745,r:4.3,rc:265,p:1,c:'炒飯炒麵',w:['Monday: 11:00 AM – 2:30 PM, 4:30 – 8:30 PM','Tuesday: 11:00 AM – 2:00 PM, 4:30 – 8:30 PM','Wednesday: 11:00 AM – 2:00 PM, 4:30 – 8:30 PM','Thursday: 11:00 AM – 2:00 PM, 4:30 – 8:30 PM','Friday: 11:00 AM – 2:00 PM, 4:30 – 8:30 PM','Saturday: Closed','Sunday: Closed'],addr:'永吉路278巷27弄3號',rev:'50元炒飯超平價！咖哩、番茄醬多種口味，含半顆滷蛋，信義區CP值之冠。'},
+
+// ═══ 台式小吃 ═══
+{name:'味家路滷肉飯・米糕',lat:25.0424,lng:121.5638,r:3.8,rc:1427,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: 11:00 AM – 8:30 PM'],addr:'忠孝東路四段559巷18-1號',rev:'台式小吃老店，滷肉飯米糕蚵仔都有，超平價，上班族午餐必選，全年無休。'},
+{name:'正德小吃店（滷肉飯65元）',lat:25.0423,lng:121.5631,r:4.1,rc:237,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 2:00 PM, 4:40 – 8:00 PM','Tuesday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Wednesday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Thursday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Friday: 11:00 AM – 2:00 PM, 4:30 – 8:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷6弄5號1樓',rev:'65元滷肉飯飄香，魯汁入味不油膩，是附近最平價的台式老店，週末公休。'},
+{name:'老哥（雞肉飯・乾拌麵）',lat:25.0420,lng:121.5637,r:3.9,rc:641,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:30 AM – 8:30 PM','Sunday: Closed'],addr:'忠孝東路四段559巷8-1號',rev:'雞肉飯、咖哩、乾拌麵都可口，上班族評價穩定，份量足，日曜公休。'},
+{name:'港都旗魚米粉湯',lat:25.0422,lng:121.5644,r:3.9,rc:150,p:1,c:'台式小吃',w:['Monday: 11:30 AM – 7:30 PM','Tuesday: 11:30 AM – 7:30 PM','Wednesday: 11:30 AM – 7:30 PM','Thursday: 11:30 AM – 7:30 PM','Friday: 11:30 AM – 7:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄24號',rev:'現炸雞腿脆嫩、沙茶米粉湯鮮，百元以下的親民小吃，週末公休。'},
+{name:'福州乾拌麵',lat:25.0420,lng:121.5632,r:4.0,rc:770,p:1,c:'台式小吃',w:['Monday: 10:00 AM – 7:30 PM','Tuesday: 10:00 AM – 7:30 PM','Wednesday: 10:00 AM – 7:30 PM','Thursday: 10:00 AM – 7:30 PM','Friday: 10:00 AM – 7:30 PM','Saturday: 10:00 AM – 1:45 PM','Sunday: Closed'],addr:'忠孝東路四段553巷2弄9號',rev:'招牌紅油抄手麵必點！加醋加辣更對味，午餐時段超人氣，週日公休。'},
+{name:'香港正宗廣居燒臘',lat:25.0424,lng:121.5641,r:3.9,rc:138,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 2:30 PM','Tuesday: 11:00 AM – 2:30 PM','Wednesday: 11:00 AM – 2:30 PM','Thursday: 11:00 AM – 2:30 PM','Friday: 11:00 AM – 2:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄11號',rev:'港式燒臘烤鴨多汁皮酥，「三寶」套餐130元超划算，只開午餐。'},
+{name:'文創飲食亭',lat:25.0429,lng:121.5630,r:4.4,rc:148,p:0,c:'台式小吃',w:['Monday: 11:30 AM – 8:00 PM','Tuesday: 11:30 AM – 8:00 PM','Wednesday: 11:30 AM – 8:00 PM','Thursday: 11:30 AM – 8:00 PM','Friday: 11:30 AM – 8:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷16弄1-2號',rev:'重慶酸辣麵是招牌，排骨飯五道小菜份量實在，松菸旁週末公休。'},
+{name:'劉記客家小吃',lat:25.0421,lng:121.5644,r:4.4,rc:64,p:0,c:'台式小吃',w:['Monday: 11:00 AM – 6:00 PM','Tuesday: 11:00 AM – 6:00 PM','Wednesday: 11:00 AM – 6:00 PM','Thursday: 11:00 AM – 6:00 PM','Friday: 11:00 AM – 3:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄36號',rev:'客家家常風，滷肉飯炒青菜肉骨麵，老闆熱情好客，週末公休。'},
 {name:'森小館 台式熱炒',lat:25.0424,lng:121.5637,r:4.5,rc:181,p:0,c:'台式小吃',w:['Monday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM','Tuesday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM','Wednesday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM','Thursday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM','Friday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM','Saturday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM','Sunday: 11:30 AM – 2:00 PM, 5:00 – 8:15 PM'],addr:'忠孝東路四段559巷18號',rev:'家常台式熱炒，鹹酥豬、三杯雞招牌，白飯湯品無限供應，老闆娘超熱情。'},
-{name:'Tori Yoshoku 鳥洋食',lat:25.0426,lng:121.5631,r:4.4,rc:673,p:2,c:'日式',w:['Monday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Tuesday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Wednesday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Thursday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Friday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Sunday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM'],addr:'忠孝東路四段553巷16弄2號1樓',rev:'日式洋食，鴨肉辣味義大利麵超推，奶油麵包和套餐搭配很讚。'},
-{name:'樂 らく Raku 日式咖哩',lat:25.0425,lng:121.5643,r:4.8,rc:242,p:0,c:'日式',w:['Monday: 11:30 AM – 10:00 PM','Tuesday: 11:30 AM – 10:00 PM','Wednesday: 11:30 AM – 10:00 PM','Thursday: 11:30 AM – 5:00 PM','Friday: 11:30 AM – 10:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄19號',rev:'炸豬排咖哩是一絕，外皮酥脆、咖哩濃郁，白飯免費續，平價高評，週六日公休。'},
-{name:'初魚職人自慢 松菸店',lat:25.0431,lng:121.5635,r:4.6,rc:2596,p:0,c:'日式',w:['Monday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Tuesday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Wednesday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Thursday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Friday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷22弄10號',rev:'職人鰻魚飯與壽司，食材新鮮，鮭魚三種吃法亮點，生啤酒配，誠意十足。'},
-{name:'Niku Don 極乜 和牛丼',lat:25.0428,lng:121.5633,r:4.8,rc:71,p:0,c:'日式',w:['Monday: 12:00 – 8:00 PM','Tuesday: 12:00 – 8:00 PM','Wednesday: 12:00 – 8:00 PM','Thursday: 12:00 – 8:00 PM','Friday: 12:00 – 8:00 PM','Saturday: 12:00 – 8:00 PM','Sunday: 12:00 – 8:00 PM'],addr:'忠孝東路四段553巷16弄7號',rev:'炙烤牛舌厚切彈嫩多汁，漢堡排牛舌咖哩都精彩，品質穩定，肉食者天堂。'},
-{name:'Tsukemen 五之神製作所',lat:25.0422,lng:121.5631,r:4.3,rc:5731,p:2,c:'日式',w:['Monday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Tuesday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Wednesday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Thursday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Friday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷6弄6號1樓',rev:'蝦湯沾麵鮮蝦味濃郁，評論數超多，常需候位抽號碼牌，麵條Q彈必嚐。'},
-{name:'Woosa 洋食鬆餅',lat:25.0436,lng:121.5629,r:4.2,rc:2700,p:2,c:'日式',w:['Monday: 11:30 AM – 9:30 PM','Tuesday: 11:30 AM – 9:30 PM','Wednesday: 11:30 AM – 9:30 PM','Thursday: 11:30 AM – 9:30 PM','Friday: 11:30 AM – 9:30 PM','Saturday: 11:00 AM – 9:30 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'忠孝東路四段553巷28號',rev:'招牌松露湯飯先吃燉飯再加湯兩種吃法，舒芙蕾鬆餅香濃，環境舒適寬敞。'},
-{name:'新高軒 日式咖哩 A11',lat:25.0367,lng:121.5673,r:4.5,rc:1908,p:2,c:'日式',w:['Monday: 11:00 AM – 9:00 PM','Tuesday: 11:00 AM – 9:00 PM','Wednesday: 11:00 AM – 9:00 PM','Thursday: 11:00 AM – 9:00 PM','Friday: 11:00 AM – 9:30 PM','Saturday: 11:00 AM – 9:30 PM','Sunday: 11:00 AM – 9:00 PM'],addr:'松壽路11號地下二樓（A11）',rev:'咖哩雞腿排超推，午餐仍快速出餐，咖哩濃郁不過鹹，信義商圈便利選擇。'},
-{name:'天狗86牛肉麵 永吉店',lat:25.0425,lng:121.5703,r:4.5,rc:441,p:0,c:'牛肉麵',w:['Monday: 11:30 AM – 9:00 PM','Tuesday: 11:30 AM – 9:00 PM','Wednesday: 11:30 AM – 9:00 PM','Thursday: 11:30 AM – 9:00 PM','Friday: 11:30 AM – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'永吉路83巷83號',rev:'黃金肉腱牛肉麵，湯頭甜中帶鮮，曾登Netflix，現代裝潢乾淨，彈Q有嚼感。'},
-
-// ── 牛肉麵 ──────────────────────────────────────────────────────
-{name:'半島牛肉麵',lat:25.0419,lng:121.5703,r:4.6,rc:8423,p:2,c:'牛肉麵',w:['Monday: 10:30 AM – 9:10 PM','Tuesday: 10:30 AM – 9:10 PM','Wednesday: 10:30 AM – 9:10 PM','Thursday: 10:30 AM – 9:10 PM','Friday: 10:30 AM – 9:10 PM','Saturday: 10:30 AM – 9:10 PM','Sunday: 10:30 AM – 9:10 PM'],addr:'忠孝東路五段215巷23號',rev:'台北牛肉麵名店，番茄湯底鮮甜、牛肉塊超大，水餃也好吃，全年無休，強烈推薦！'},
-{name:'牛肉麵・雞湯 新信義店',lat:25.0412,lng:121.5693,r:4.0,rc:648,p:2,c:'牛肉麵',w:['Monday: 5:00 PM – 2:30 AM','Tuesday: 5:00 PM – 2:30 AM','Wednesday: 5:00 PM – 2:30 AM','Thursday: 5:00 PM – 2:30 AM','Friday: 5:00 PM – 2:30 AM','Saturday: 5:00 PM – 2:30 AM','Sunday: 5:00 PM – 2:30 AM'],addr:'忠孝東路五段189號',rev:'深夜宵夜選擇，開到凌晨2:30，雞湯比牛肉麵更讚，花椒辣勁明顯，台式好滋味。'},
-{name:'上海市牛肉麵',lat:25.0417,lng:121.5674,r:3.5,rc:583,p:1,c:'牛肉麵',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: Closed'],addr:'忠孝東路五段71巷7號',rev:'120元平價牛肉麵，牛肉入味鮮嫩，蒜味明顯，適合預算有限的快速午餐。'},
-{name:'總裁牛肉麵 遠百A13門市',lat:25.0368,lng:121.5680,r:4.8,rc:281,p:0,c:'牛肉麵',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松仁路58號4樓',rev:'信義商圈高評分牛肉麵，位在遠百A13，環境舒適，牛肉軟嫩湯頭濃郁。'},
-{name:'C.E.O 牛肉麵 信義店',lat:25.0394,lng:121.5679,r:4.0,rc:1064,p:2,c:'牛肉麵',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松仁路28號B2（BellaVita）',rev:'燉牛肉軟嫩，胡椒湯底有特色，位在BellaVita地下，小菜豐富。'},
-
-// ── 早午餐/咖啡 ─────────────────────────────────────────────────
-{name:'珍方早午餐 Zhen Fang',lat:25.0425,lng:121.5643,r:4.4,rc:3021,p:1,c:'早午餐',w:['Monday: 6:30 AM – 1:30 PM','Tuesday: 6:30 AM – 1:30 PM','Wednesday: 6:30 AM – 1:30 PM','Thursday: 6:30 AM – 1:30 PM','Friday: 6:30 AM – 1:30 PM','Saturday: 6:30 AM – 1:30 PM','Sunday: 6:30 AM – 1:30 PM'],addr:'忠孝東路四段559巷16弄17號',rev:'超人氣台式早餐，蛋餅、吐司、豆漿全日供應，排隊也值得，只開到下午一點半。'},
-{name:'安好食 大巨蛋店',lat:25.0427,lng:121.5632,r:4.8,rc:1343,p:0,c:'早午餐',w:['Monday: 8:00 AM – 1:50 PM','Tuesday: 8:00 AM – 1:50 PM','Wednesday: 8:00 AM – 1:50 PM','Thursday: 8:00 AM – 1:50 PM','Friday: 8:00 AM – 1:50 PM','Saturday: 8:00 AM – 2:30 PM','Sunday: 8:00 AM – 2:30 PM'],addr:'忠孝東路四段553巷16弄4號',rev:'豬排三明治超美味，薯餅現炸，160元含飲料超值，只開早上，現金付款。'},
-{name:'Toast Chief',lat:25.0422,lng:121.5632,r:4.1,rc:606,p:1,c:'早午餐',w:['Monday: 7:30 AM – 2:00 PM','Tuesday: 7:30 AM – 2:00 PM','Wednesday: 7:30 AM – 2:00 PM','Thursday: 7:30 AM – 2:00 PM','Friday: 7:30 AM – 2:00 PM','Saturday: 7:30 AM – 2:00 PM','Sunday: 7:30 AM – 2:00 PM'],addr:'忠孝東路四段553巷6弄8-1號',rev:'小學課桌椅裝潢超可愛，波蘿包鮮肉蛋、肉排三明治都是招牌，早上就開始賣。'},
-{name:'11 Eleven Café',lat:25.0425,lng:121.5629,r:4.5,rc:2641,p:2,c:'義式',w:['Monday: Closed','Tuesday: 11:30 AM – 3:30 PM, 5:00 – 9:30 PM','Wednesday: 11:30 AM – 3:30 PM, 5:00 – 9:30 PM','Thursday: 11:30 AM – 3:30 PM, 5:00 – 9:30 PM','Friday: 11:30 AM – 9:30 PM','Saturday: 10:00 AM – 10:00 PM','Sunday: 10:00 AM – 10:00 PM'],addr:'忠孝東路四段553巷12號1樓之一',rev:'海鮮義麵彈牙鮮美，商業午餐附湯沙拉麵包飲料很划算，週一公休。'},
-{name:'CURISTA COFFEE 市政府店',lat:25.0416,lng:121.5641,r:4.6,rc:1825,p:2,c:'咖啡廳',w:['Monday: 7:30 AM – 8:00 PM','Tuesday: 7:30 AM – 8:00 PM','Wednesday: 7:30 AM – 8:00 PM','Thursday: 7:30 AM – 8:00 PM','Friday: 7:30 AM – 8:00 PM','Saturday: 7:30 AM – 8:00 PM','Sunday: 7:30 AM – 8:00 PM'],addr:'忠孝東路四段563號1樓',rev:'台北人氣咖啡，抹茶拿鐵極佳，環境明亮，輕食豐富，離聯合報超近。'},
-{name:'CuppaCuppa Cafe',lat:25.0422,lng:121.5637,r:4.8,rc:401,p:0,c:'咖啡廳',w:['Monday: 7:30 AM – 5:30 PM','Tuesday: 7:30 AM – 5:30 PM','Wednesday: 7:30 AM – 5:30 PM','Thursday: 7:30 AM – 5:30 PM','Friday: 7:30 AM – 5:30 PM','Saturday: 9:00 AM – 5:00 PM','Sunday: 9:00 AM – 5:00 PM'],addr:'忠孝東路四段559巷14號',rev:'超高評分外帶咖啡小店，焦糖拿鐵和紅糖拿鐵超受歡迎，快速便宜，早上就開。'},
-{name:'Café by U',lat:25.0441,lng:121.5629,r:4.9,rc:122,p:0,c:'咖啡廳',w:['Monday: 10:30 AM – 7:00 PM','Tuesday: Closed','Wednesday: 10:30 AM – 7:00 PM','Thursday: 10:30 AM – 7:00 PM','Friday: 10:30 AM – 7:00 PM','Saturday: 10:30 AM – 7:00 PM','Sunday: 10:30 AM – 7:00 PM'],addr:'忠孝東路四段553巷42-1號1樓',rev:'藝廊咖啡隱藏版，桂花拿鐵是亮點，幾乎近滿分評價，週二公休。'},
-{name:'Time out 23 café 拾刻咖啡',lat:25.0432,lng:121.5633,r:4.7,rc:17,p:0,c:'咖啡廳',w:['Monday: 10:00 AM – 7:00 PM','Tuesday: 10:00 AM – 7:00 PM','Wednesday: 10:00 AM – 7:00 PM','Thursday: 10:00 AM – 7:00 PM','Friday: 10:00 AM – 9:00 PM','Saturday: 10:00 AM – 9:00 PM','Sunday: 10:00 AM – 9:00 PM'],addr:'忠孝東路四段553巷22弄6-1號',rev:'新開的質感小店，商業午餐划算舒適，伯爵磅蛋糕飄香，員工熱情友善。'},
-{name:'NUMÉRO QUATRE',lat:25.0434,lng:121.5631,r:4.2,rc:499,p:0,c:'咖啡廳',w:['Monday: 11:00 AM – 6:00 PM','Tuesday: 11:00 AM – 6:00 PM','Wednesday: 11:00 AM – 6:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'忠孝東路四段553巷22弄5號',rev:'法式小鎮氛圍，木質歐洲家具，桂花奧斯曼拿鐵是招牌，適合下午慢食。'},
-
-// ── 漢堡 ────────────────────────────────────────────────────────
-{name:'BURGER OUT',lat:25.0432,lng:121.5631,r:4.6,rc:1727,p:2,c:'漢堡',w:['Monday: Closed','Tuesday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Wednesday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Thursday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Friday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Saturday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Sunday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM'],addr:'忠孝東路四段553巷22弄2號',rev:'台北最好吃炸雞堡之一！肉汁四溢、外皮酥脆，楓糖雞翅也是絕品，週一公休。'},
-{name:'Awesome Burger',lat:25.0420,lng:121.5642,r:4.7,rc:2431,p:2,c:'漢堡',w:['Monday: Closed','Tuesday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Wednesday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Thursday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Friday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Saturday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Sunday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM'],addr:'基隆路一段190巷11號',rev:'評分超高的精品漢堡，肉排鮮嫩、料多實在，花生醬漢堡是名物，週一公休。'},
-{name:'BURNT BURGER SOCIAL CLUB',lat:25.0423,lng:121.5678,r:4.4,rc:381,p:0,c:'漢堡',w:['Monday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Tuesday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Wednesday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Thursday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Friday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Saturday: 12:00 – 9:00 PM','Sunday: 12:00 – 9:00 PM'],addr:'基隆路一段147巷54號',rev:'開放廚房美式漢堡，花生醬藍莓漢堡很特別，雞翅也讚，音樂氛圍好。'},
-
-// ── 西式/義式/創意料理 ────────────────────────────────────────────
-{name:'Hërs bistro 她/的餐酒',lat:25.0432,lng:121.5631,r:4.1,rc:1095,p:2,c:'西式',w:['Monday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Tuesday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Wednesday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Thursday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Friday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷22弄4號',rev:'西式餐酒館，沙拉義麵燉飯都精緻，創意飲品適合拍照，可攜寵物，氛圍輕鬆。'},
-{name:'30 Thirty 早午餐',lat:25.0398,lng:121.5624,r:4.4,rc:1891,p:2,c:'西式',w:['Monday: Closed','Tuesday: Closed','Wednesday: 9:00 AM – 5:30 PM','Thursday: 9:00 AM – 5:30 PM','Friday: 9:00 AM – 5:30 PM','Saturday: 9:00 AM – 5:30 PM','Sunday: 9:00 AM – 5:30 PM'],addr:'一縣路26巷17號',rev:'威士忌骨髓、特色麵包驚喜十足，食材新鮮，週一二公休。'},
-{name:'Miacucina 信義店 素食義式',lat:25.0362,lng:121.5671,r:4.3,rc:4665,p:2,c:'蔬食',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松壽路11號2樓（A11）',rev:'高人氣素食義式，青醬義麵美味，份量大，位於A11，適合蔬食者。'},
-{name:'BaganHood 全蔬食',lat:25.0443,lng:121.5635,r:4.5,rc:1953,p:2,c:'蔬食',w:['Monday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Tuesday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Wednesday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Thursday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Friday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Saturday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Sunday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM'],addr:'忠孝東路四段553巷46弄11號',rev:'全蔬食餐廳，菇菇炸雞口感神似真雞，白花菜腰果醬是招牌，份量超大。'},
-{name:'WHAT\'S LA SAUCE? Kitchen & Bar',lat:25.0422,lng:121.5633,r:4.9,rc:293,p:0,c:'創意料理',w:['Monday: Closed','Tuesday: Closed','Wednesday: 5:00 – 10:30 PM','Thursday: 5:00 – 10:30 PM','Friday: 5:00 – 11:00 PM','Saturday: 5:00 – 11:00 PM','Sunday: 5:00 – 10:30 PM'],addr:'忠孝東路四段553巷6弄12號1樓',rev:'評分超高的創意融合餐廳，只開晚餐，食物和裝潢都讓人驚豔，週一二公休。'},
-{name:'gubami Social 亞洲融合',lat:25.0363,lng:121.5669,r:4.4,rc:883,p:0,c:'創意料理',w:['Monday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Tuesday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Wednesday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Thursday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Friday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Saturday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Sunday: 12:00 – 3:00 PM, 6:00 – 10:00 PM'],addr:'松壽路9號6樓',rev:'陳嵐舒主廚，法式台菜跨界，牛肉麵和發酵豆腐麵包滋味爆炸。'},
-{name:'M One Café A11',lat:25.0372,lng:121.5671,r:4.5,rc:2956,p:2,c:'早午餐',w:['Monday: 9:00 AM – 9:30 PM','Tuesday: 9:00 AM – 9:30 PM','Wednesday: 9:00 AM – 9:30 PM','Thursday: 9:00 AM – 9:30 PM','Friday: 9:00 AM – 10:00 PM','Saturday: 9:00 AM – 10:00 PM','Sunday: 9:00 AM – 9:30 PM'],addr:'松壽路11號3樓',rev:'美式蛋班尼迪克超讚，酥脆培根現做，龍蝦堡是期間限定亮點，服務親切。'},
-{name:'Café Kitsuné BELLAVITA',lat:25.0398,lng:121.5675,r:4.6,rc:640,p:0,c:'咖啡廳',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松仁路28號2樓（BellaVita）',rev:'法國時尚品牌咖啡廳，羅馬諾咖啡加可頌，午後一片慵懶愜意。'},
-{name:'Buna Cafe 信義',lat:25.0332,lng:121.5594,r:4.6,rc:3764,p:2,c:'咖啡廳',w:['Monday: 9:00 AM – 12:00 AM','Tuesday: 9:00 AM – 12:00 AM','Wednesday: 9:00 AM – 12:00 AM','Thursday: 9:00 AM – 12:00 AM','Friday: 9:00 AM – 12:00 AM','Saturday: 8:00 AM – 12:00 AM','Sunday: 8:00 AM – 12:00 AM'],addr:'信義路四段415之3號',rev:'鄰近101的人氣咖啡館，可久坐，餐點新鮮實惠，聚會聊天都很適合。'},
-{name:'福喜 Lucky Eat 古巴三明治',lat:25.0415,lng:121.5685,r:4.7,rc:3249,p:0,c:'西式',w:['Monday: 11:00 AM – 8:00 PM','Tuesday: 11:00 AM – 8:00 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: 11:00 AM – 8:30 PM'],addr:'忠孝東路五段71巷32號1樓',rev:'古巴三明治超鮮美，薯條酥脆，200元含薯條冰茶套餐，信義區高cp西式選項。'},
-{name:'Woolloomooloo 澳式餐廳',lat:25.0333,lng:121.5581,r:4.0,rc:4748,p:2,c:'西式',w:['Monday: 7:30 AM – 11:00 PM','Tuesday: 7:30 AM – 11:00 PM','Wednesday: 7:30 AM – 11:00 PM','Thursday: 7:30 AM – 11:00 PM','Friday: 7:30 AM – 12:00 AM','Saturday: 7:30 AM – 12:00 AM','Sunday: 7:30 AM – 11:00 PM'],addr:'信義路四段379號',rev:'澳式人氣餐廳，可馬鈴薯是亮點，酥烤雞肉不錯，早餐到宵夜全天候。'},
-{name:'LEAVES Cafe 午葉信義',lat:25.0420,lng:121.5689,r:4.1,rc:1105,p:0,c:'咖啡廳',w:['Monday: 9:00 AM – 8:30 PM','Tuesday: 9:00 AM – 8:30 PM','Wednesday: 9:00 AM – 8:30 PM','Thursday: 9:00 AM – 8:30 PM','Friday: 9:00 AM – 8:30 PM','Saturday: 9:00 AM – 8:30 PM','Sunday: 9:00 AM – 8:30 PM'],addr:'永吉路30巷167弄3號',rev:'炸雞外皮酥脆不油，南瓜湯是靈魂，環境輕鬆適合久坐，鮭魚補充omega-3。'},
-
-// ── 台式正餐 ─────────────────────────────────────────────────────
+{name:'E-Bu 生煎包',lat:25.0422,lng:121.5637,r:4.6,rc:301,p:0,c:'台式小吃',w:['Monday: 6:30 AM – 1:00 PM','Tuesday: 6:30 AM – 1:00 PM','Wednesday: 6:30 AM – 1:00 PM','Thursday: 6:30 AM – 1:00 PM','Friday: 6:30 AM – 1:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷14號',rev:'底部酥脆的生煎包，高麗菜豬肉餡汁多味美，一顆18元超平實，一早就開。'},
 {name:'稻舍食館 統一時代店',lat:25.0405,lng:121.5655,r:4.3,rc:823,p:0,c:'台式小吃',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'忠孝東路五段8號B2（統一時代）',rev:'台式套餐一主三小菜，紅燒肉入口即化，雞湯鮮甜，擺盤精緻。'},
 {name:'稻舍食館 微風信義店',lat:25.0405,lng:121.5670,r:4.5,rc:500,p:2,c:'台式小吃',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'忠孝東路五段68號4樓（微風信義）',rev:'豬油拌飯招牌必嚐，紅燒肉軟嫩，台南194米好吃，信義商圈難得的好台菜。'},
-{name:'欣葉台菜 新光三越A9',lat:25.0367,lng:121.5667,r:4.2,rc:2351,p:3,c:'台式小吃',w:['Monday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Tuesday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Wednesday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Thursday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Friday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Saturday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Sunday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM'],addr:'松壽路9號8樓',rev:'台灣老字號台菜，蔥捲、炸芝麻球都是必點，商務午餐好選擇，建議訂位。'},
 {name:'如意餐廳 Ju-Yi Hall',lat:25.0326,lng:121.5580,r:4.5,rc:64,p:0,c:'台式小吃',w:['Monday: 7:00 – 10:00 AM, 11:00 AM – 2:00 PM','Tuesday: 7:00 – 10:00 AM, 11:30 AM – 2:00 PM','Wednesday: 7:00 – 10:00 AM, 11:30 AM – 2:00 PM','Thursday: 7:00 – 10:00 AM, 11:30 AM – 2:00 PM','Friday: 7:00 – 10:00 AM, 11:30 AM – 2:00 PM','Saturday: 7:00 – 10:00 AM','Sunday: 7:00 – 10:00 AM, 11:00 AM – 2:00 PM'],addr:'光復南路495號11樓',rev:'藏在辦公大樓的清幽商務餐廳，鰻魚飯牛肉麵水準不錯，水果甜點自助取用。'},
-{name:'泰緹姊妹小館',lat:25.0397,lng:121.5717,r:4.8,rc:747,p:0,c:'泰式',w:['Monday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Tuesday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Wednesday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Thursday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Friday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Saturday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Sunday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM'],addr:'忠孝東路五段236巷22號',rev:'信義最推泰式，青木瓜沙拉、咖哩、蝦餅都是亮點，是少數評分超高的泰菜。'},
-{name:'URBAN PARADISE 信義店 自助',lat:25.0397,lng:121.5659,r:4.8,rc:5341,p:0,c:'自助',w:['Monday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Tuesday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Wednesday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Thursday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Friday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Saturday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM','Sunday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM'],addr:'松高路11號5樓',rev:'信義區評分最高，海鮮創意料理自助餐廳，無限暢飲，需預約，適合聚會。'},
+{name:'時時香 Rice Bar 微風南山',lat:25.0343,lng:121.5661,r:4.0,rc:1672,p:2,c:'台式小吃',w:['Monday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Tuesday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Wednesday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Thursday: 11:00 AM – 3:00 PM, 5:00 – 10:00 PM','Friday: 11:00 AM – 3:00 PM, 5:00 – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松智路17號6樓',rev:'台中194香米飯，豬油飯是靈魂，炸豆腐umami爆發，服務親切。'},
+{name:'欣葉台菜 新光三越A9',lat:25.0367,lng:121.5667,r:4.2,rc:2351,p:3,c:'台式小吃',w:['Monday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Tuesday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Wednesday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Thursday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Friday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Saturday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM','Sunday: 11:00 AM – 2:30 PM, 5:00 – 9:30 PM'],addr:'松壽路9號8樓',rev:'台灣老字號台菜，蔥捲、炸芝麻球都是必點，商務午餐好選擇，建議訂位。'},
+{name:'騎鳳素食館',lat:25.0403,lng:121.5625,r:4.4,rc:399,p:1,c:'蔬食',w:['Monday: 11:00 AM – 2:00 PM, 5:00 – 7:00 PM','Tuesday: 11:00 AM – 2:00 PM, 5:00 – 7:00 PM','Wednesday: 11:00 AM – 2:00 PM, 5:00 – 7:00 PM','Thursday: 11:00 AM – 2:00 PM, 5:00 – 7:00 PM','Friday: 11:00 AM – 2:00 PM, 5:00 – 7:00 PM','Saturday: Closed','Sunday: Closed'],addr:'一縣路50巷14號',rev:'信義區最平價素食食堂，料多新鮮，許多素食者的心頭好，週末不開。'},
+
+// ═══ 便當 ═══
+{name:'激饑商行便當（評分4.9!）',lat:25.0420,lng:121.5632,r:4.9,rc:48,p:0,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Tuesday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Wednesday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Thursday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Friday: 10:30 AM – 2:00 PM, 4:30 – 6:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷2弄7號',rev:'評分近滿分隱藏便當！炸雞腿皮薄酥脆、滷肉燉到入味，配菜豐富，強烈推薦。'},
+{name:'鳳姐快餐便當',lat:25.0427,lng:121.5637,r:4.2,rc:486,p:1,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Tuesday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Wednesday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Thursday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Friday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Saturday: 10:30 AM – 2:00 PM, 4:30 – 8:00 PM','Sunday: Closed'],addr:'忠孝東路四段559巷22號',rev:'雞腿超美味，份量大，米飯湯飲自助補充，快速親民，週日公休。'},
+{name:'Aum Aum Dosirak 韓定食便當',lat:25.0423,lng:121.5643,r:4.7,rc:507,p:0,c:'便當',w:['Monday: 11:00 AM – 2:00 PM','Tuesday: 11:00 AM – 2:00 PM','Wednesday: 11:00 AM – 2:00 PM','Thursday: 11:00 AM – 2:00 PM','Friday: 11:00 AM – 2:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄18號1樓',rev:'韓式精緻便當11格，蒜香豆腐每次都讓人回訪，包裝精美，週一到週五午餐限定。'},
+{name:'Onigiri Planet 飯丸屋',lat:25.0424,lng:121.5638,r:4.6,rc:1005,p:0,c:'便當',w:['Monday: 8:00 AM – 8:00 PM','Tuesday: 8:00 AM – 8:00 PM','Wednesday: 8:00 AM – 8:00 PM','Thursday: 8:00 AM – 8:00 PM','Friday: 8:00 AM – 8:00 PM','Saturday: 9:00 AM – 8:00 PM','Sunday: 9:00 AM – 8:00 PM'],addr:'忠孝東路四段559巷16弄1號1樓',rev:'日式飯丸，米飯紮實粒粒分明，美式塔可碗、炸物配餐都很讚，全天候可買。'},
+{name:'Getpower 給力盒子 松菸店',lat:25.0420,lng:121.5632,r:4.2,rc:391,p:0,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Tuesday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Wednesday: 10:30 AM – 2:00 PM, 3:30 – 7:30 PM','Thursday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Friday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷2弄11號',rev:'健康餐盒標示熱量，蔬菜超新鮮，份量比一般健康便當大，週末公休。'},
+{name:'江家 燒肉飯・香腸便當',lat:25.0250,lng:121.5691,r:4.1,rc:182,p:1,c:'便當',w:['Monday: 11:30 AM – 8:00 PM','Tuesday: 11:30 AM – 8:00 PM','Wednesday: 11:30 AM – 8:00 PM','Thursday: 11:30 AM – 8:00 PM','Friday: 11:30 AM – 8:00 PM','Saturday: 11:30 AM – 5:00 PM','Sunday: Closed'],addr:'松仁路236號',rev:'招牌便當80元，台式滷肉飯是靈魂食物，日曜公休。'},
+{name:'川仔精緻料理便當',lat:25.0276,lng:121.5683,r:4.5,rc:179,p:0,c:'便當',w:['Monday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Tuesday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Wednesday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Thursday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Friday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Saturday: Closed','Sunday: Closed'],addr:'松仁路190號',rev:'夫妻精緻便當，食材新鮮，比商場便宜又好吃，週六日不開。'},
+{name:'虎味食堂便當',lat:25.0285,lng:121.5639,r:4.3,rc:143,p:0,c:'便當',w:['Monday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Tuesday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Wednesday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Thursday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Friday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Saturday: 11:00 AM – 3:00 PM','Sunday: Closed'],addr:'莊敬路325巷13號',rev:'排骨飯現炸必點，四道配菜份量足，130元在信義區非常划算。'},
+{name:'鷺野烤肉飯',lat:25.0359,lng:121.5779,r:4.3,rc:259,p:1,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Tuesday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Wednesday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Thursday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Friday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Saturday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Sunday: Closed'],addr:'信義路六段110號1樓',rev:'烤肉飯份量霸氣，五花肉堆滿盤，外帶為主，C/P值極高。'},
+
+// ═══ 牛肉麵 ═══
+{name:'半島牛肉麵 ⭐台北名店',lat:25.0419,lng:121.5703,r:4.6,rc:8423,p:2,c:'牛肉麵',w:['Monday: 10:30 AM – 9:10 PM','Tuesday: 10:30 AM – 9:10 PM','Wednesday: 10:30 AM – 9:10 PM','Thursday: 10:30 AM – 9:10 PM','Friday: 10:30 AM – 9:10 PM','Saturday: 10:30 AM – 9:10 PM','Sunday: 10:30 AM – 9:10 PM'],addr:'忠孝東路五段215巷23號',rev:'台北牛肉麵名店，番茄湯底鮮甜、牛肉塊超大，水餃也好，全年無休強推！'},
+{name:'天狗86牛肉麵 永吉店',lat:25.0425,lng:121.5703,r:4.5,rc:441,p:0,c:'牛肉麵',w:['Monday: 11:30 AM – 9:00 PM','Tuesday: 11:30 AM – 9:00 PM','Wednesday: 11:30 AM – 9:00 PM','Thursday: 11:30 AM – 9:00 PM','Friday: 11:30 AM – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'永吉路83巷83號',rev:'黃金肉腱牛肉麵曾登Netflix，湯頭甜中帶鮮，現代裝潢乾淨。'},
+{name:'上海市牛肉麵',lat:25.0417,lng:121.5674,r:3.5,rc:583,p:1,c:'牛肉麵',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: Closed'],addr:'忠孝東路五段71巷7號',rev:'120元平價牛肉麵，牛肉入味，適合預算有限的快速午餐，日曜公休。'},
+{name:'總裁牛肉麵 遠百A13',lat:25.0368,lng:121.5680,r:4.8,rc:281,p:0,c:'牛肉麵',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松仁路58號4樓',rev:'信義商圈高評分牛肉麵，位在遠百A13，環境舒適，牛肉軟嫩湯頭濃郁。'},
+{name:'牛肉麵・雞湯 新信義店（宵夜）',lat:25.0412,lng:121.5693,r:4.0,rc:648,p:2,c:'牛肉麵',w:['Monday: 5:00 PM – 2:30 AM','Tuesday: 5:00 PM – 2:30 AM','Wednesday: 5:00 PM – 2:30 AM','Thursday: 5:00 PM – 2:30 AM','Friday: 5:00 PM – 2:30 AM','Saturday: 5:00 PM – 2:30 AM','Sunday: 5:00 PM – 2:30 AM'],addr:'忠孝東路五段189號',rev:'開到凌晨2:30！雞湯比牛肉麵更推，花椒辣勁明顯，加班族宵夜神選。'},
+
+// ═══ 拉麵 ═══
+{name:'Tsukemen 五之神製作所',lat:25.0422,lng:121.5631,r:4.3,rc:5731,p:2,c:'拉麵',w:['Monday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Tuesday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Wednesday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Thursday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Friday: 11:30 AM – 3:00 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷6弄6號1樓',rev:'蝦湯沾麵鮮蝦味濃郁，評論數超多，常需候位，麵條Q彈必嚐。'},
+{name:'濃氣屋拉麵 忠孝店',lat:25.0422,lng:121.5520,r:4.4,rc:3386,p:2,c:'拉麵',w:['Monday: 11:00 AM – 3:00 PM, 5:00 – 11:00 PM','Tuesday: 11:00 AM – 3:00 PM, 5:00 – 11:00 PM','Wednesday: 5:00 – 11:00 PM','Thursday: 11:00 AM – 3:00 PM, 5:00 – 11:00 PM','Friday: 11:30 AM – 11:00 PM','Saturday: 11:30 AM – 11:00 PM','Sunday: 11:30 AM – 9:30 PM'],addr:'忠孝東路四段205巷9號B1',rev:'咖哩拉麵超讚，免費咖哩飯吃到飽，湯頭濃郁，150元起的超值日式拉麵。'},
+{name:'一真亭拉麵',lat:25.0287,lng:121.5646,r:4.6,rc:1078,p:2,c:'拉麵',w:['Monday: 11:30 AM – 1:30 PM, 5:00 – 8:00 PM','Tuesday: 11:30 AM – 1:30 PM, 5:00 – 8:00 PM','Wednesday: 11:30 AM – 1:30 PM, 5:00 – 8:00 PM','Thursday: 11:30 AM – 1:30 PM, 5:00 – 8:00 PM','Friday: 11:30 AM – 1:30 PM, 5:00 – 8:00 PM','Saturday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM','Sunday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM'],addr:'莊敬路325巷50號',rev:'日本主廚親製，黑蒜豚骨是靈魂，叉燒入口即化，Taipei101旁隱藏名店。'},
+{name:'Ichigen Ramen 信義',lat:25.0355,lng:121.5681,r:4.2,rc:5277,p:2,c:'拉麵',w:['Monday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM','Tuesday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM','Wednesday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM','Thursday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM','Friday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM','Sunday: 11:30 AM – 2:30 PM, 5:00 – 9:00 PM'],addr:'松壽路30號1樓',rev:'蝦豬骨湯底獨特，湯頭免費續，豬肉飯也好吃，信義商圈划算拉麵選擇。'},
+
+// ═══ 日式 ═══
+{name:'Tori Yoshoku 鳥洋食',lat:25.0426,lng:121.5631,r:4.4,rc:673,p:2,c:'日式',w:['Monday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Tuesday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Wednesday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Thursday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Friday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM','Sunday: 11:30 AM – 3:30 PM, 5:00 – 9:00 PM'],addr:'忠孝東路四段553巷16弄2號1樓',rev:'日式洋食，鴨肉辣味義大利麵超推，奶油麵包套餐很讚。'},
+{name:'樂 らく Raku 日式咖哩',lat:25.0425,lng:121.5643,r:4.8,rc:242,p:0,c:'日式',w:['Monday: 11:30 AM – 10:00 PM','Tuesday: 11:30 AM – 10:00 PM','Wednesday: 11:30 AM – 10:00 PM','Thursday: 11:30 AM – 5:00 PM','Friday: 11:30 AM – 10:00 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄19號',rev:'炸豬排咖哩一絕，白飯免費續，平價高評，週六日公休。'},
+{name:'初魚職人自慢 松菸店',lat:25.0431,lng:121.5635,r:4.6,rc:2596,p:0,c:'日式',w:['Monday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Tuesday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Wednesday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Thursday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Friday: 11:30 AM – 2:15 PM, 5:30 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷22弄10號',rev:'職人鰻魚飯與壽司，食材新鮮，鮭魚三種吃法，生啤酒配超讚。'},
+{name:'Niku Don 極乜 和牛丼',lat:25.0428,lng:121.5633,r:4.8,rc:71,p:0,c:'日式',w:['Monday: 12:00 – 8:00 PM','Tuesday: 12:00 – 8:00 PM','Wednesday: 12:00 – 8:00 PM','Thursday: 12:00 – 8:00 PM','Friday: 12:00 – 8:00 PM','Saturday: 12:00 – 8:00 PM','Sunday: 12:00 – 8:00 PM'],addr:'忠孝東路四段553巷16弄7號',rev:'炙烤牛舌厚切彈嫩多汁，漢堡排牛舌咖哩都精彩，肉食者天堂。'},
+{name:'Woosa 洋食鬆餅',lat:25.0436,lng:121.5629,r:4.2,rc:2700,p:2,c:'日式',w:['Monday: 11:30 AM – 9:30 PM','Tuesday: 11:30 AM – 9:30 PM','Wednesday: 11:30 AM – 9:30 PM','Thursday: 11:30 AM – 9:30 PM','Friday: 11:30 AM – 9:30 PM','Saturday: 11:00 AM – 9:30 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'忠孝東路四段553巷28號',rev:'招牌松露湯飯先燉飯再加湯兩種吃法，舒芙蕾鬆餅香濃，環境舒適。'},
+{name:'新高軒日式咖哩 A11',lat:25.0367,lng:121.5673,r:4.5,rc:1908,p:2,c:'日式',w:['Monday: 11:00 AM – 9:00 PM','Tuesday: 11:00 AM – 9:00 PM','Wednesday: 11:00 AM – 9:00 PM','Thursday: 11:00 AM – 9:00 PM','Friday: 11:00 AM – 9:30 PM','Saturday: 11:00 AM – 9:30 PM','Sunday: 11:00 AM – 9:00 PM'],addr:'松壽路11號地下二樓（A11）',rev:'咖哩雞腿排超推，午餐快速出餐，信義商圈便利選擇。'},
+{name:'Ginto Soup Curry 湯咖哩',lat:25.0425,lng:121.5629,r:4.3,rc:2484,p:2,c:'日式',w:['Monday: Closed','Tuesday: Closed','Wednesday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Thursday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Friday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷10號',rev:'北海道風湯咖哩，漢堡排和牛排選項豐富，蔬菜鬆軟入味，週一二公休。'},
+{name:'小小麥 A11日式烏龍',lat:25.0364,lng:121.5674,r:4.6,rc:2119,p:2,c:'日式',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松壽路11號B2（A11）',rev:'日式烏龍，奶油帶子烏龍必點，炸雞飯、鮭魚茶泡飯都精彩，A11地下。'},
+{name:'長濱魚屋 信義遠百A13',lat:25.0370,lng:121.5678,r:4.6,rc:130,p:0,c:'日式',w:['Monday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM','Tuesday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM','Wednesday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM','Thursday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM','Friday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM','Saturday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM','Sunday: 11:30 AM – 2:00 PM, 5:30 – 8:00 PM'],addr:'松仁路58號B3',rev:'新鮮鮪魚丼、海鮮丼，食材品質超好，400元鮪魚丼物超所值，附味噌湯免費續。'},
+{name:'南方漁場 海鮮丼',lat:25.0416,lng:121.5718,r:4.8,rc:1041,p:2,c:'日式',w:['Monday: 11:30 AM – 2:00 PM, 5:30 – 8:30 PM','Tuesday: 11:30 AM – 2:00 PM, 5:30 – 8:30 PM','Wednesday: 11:30 AM – 2:00 PM, 5:30 – 8:30 PM','Thursday: 11:30 AM – 2:00 PM, 5:30 – 8:30 PM','Friday: 11:30 AM – 2:00 PM, 5:30 – 8:30 PM','Saturday: 11:30 AM – 2:00 PM, 5:30 – 8:30 PM','Sunday: Closed'],addr:'松新路208號',rev:'超新鮮海鮮丼，每片魚肉厚切彈嫩，師傅專業親切，日曜公休，強烈推薦。'},
+{name:'岑什手作料理 松新店',lat:25.0432,lng:121.5719,r:4.8,rc:121,p:0,c:'日式',w:['Monday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Tuesday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Wednesday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Thursday: 5:30 – 9:00 PM','Friday: 11:30 AM – 3:00 PM, 5:30 – 9:00 PM','Saturday: 12:00 – 3:00 PM, 5:00 – 9:00 PM','Sunday: Closed'],addr:'松新路160號',rev:'北海道海膽、生魚片，擺盤精緻，海鮮食材超新鮮，週四日不開，強推！'},
+
+// ═══ 韓式 ═══
+{name:'소풍 sopung 韓式料理',lat:25.0422,lng:121.5633,r:4.6,rc:582,p:0,c:'韓式',w:['Monday: 11:30 AM – 7:00 PM','Tuesday: 11:30 AM – 7:00 PM','Wednesday: Closed','Thursday: Closed','Friday: 11:30 AM – 7:00 PM','Saturday: 11:30 AM – 7:00 PM','Sunday: 11:30 AM – 7:00 PM'],addr:'忠孝東路四段553巷6弄12號',rev:'韓式料理，食材鮮、味道酸辣，週三四公休要注意！'},
+{name:'韓明屋（99元韓食）',lat:25.0421,lng:121.5644,r:4.1,rc:108,p:1,c:'韓式',w:['Monday: 11:30 AM – 3:30 PM','Tuesday: 11:30 AM – 3:30 PM','Wednesday: 11:30 AM – 3:30 PM','Thursday: 11:30 AM – 3:30 PM','Friday: 11:30 AM – 3:30 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段559巷16弄36號',rev:'僅99元的韓式套餐，泡菜好吃，信義區難得平價韓食，只開平日午餐。'},
+{name:'梨谷 韓式鐵板炭火烤肉 ATT',lat:25.0353,lng:121.5659,r:4.9,rc:4001,p:0,c:'韓式',w:['Monday: 11:00 AM – 10:00 PM','Tuesday: 11:00 AM – 10:00 PM','Wednesday: 11:00 AM – 10:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 11:00 PM','Saturday: 11:00 AM – 11:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'松壽路12號5樓',rev:'信義區評分最高韓式之一，起司蒸蛋絕配，石鍋拌飯超讚，服務超好。'},
+{name:'泰緹姊妹小館 泰式',lat:25.0397,lng:121.5717,r:4.8,rc:747,p:0,c:'泰式',w:['Monday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Tuesday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Wednesday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Thursday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Friday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Saturday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM','Sunday: 11:00 AM – 2:30 PM, 5:00 – 8:30 PM'],addr:'忠孝東路五段236巷22號',rev:'信義最推泰式，青木瓜沙拉、咖哩、蝦餅都是亮點，超高評分泰菜。'},
+
+// ═══ 義式/漢堡 ═══
+{name:'11 Eleven Café 義式',lat:25.0425,lng:121.5629,r:4.5,rc:2641,p:2,c:'義式',w:['Monday: Closed','Tuesday: 11:30 AM – 3:30 PM, 5:00 – 9:30 PM','Wednesday: 11:30 AM – 3:30 PM, 5:00 – 9:30 PM','Thursday: 11:30 AM – 3:30 PM, 5:00 – 9:30 PM','Friday: 11:30 AM – 9:30 PM','Saturday: 10:00 AM – 10:00 PM','Sunday: 10:00 AM – 10:00 PM'],addr:'忠孝東路四段553巷12號1樓之一',rev:'海鮮義麵彈牙，商業午餐附湯沙拉麵包飲料划算，週一公休。'},
+{name:'Lazy Pasta 慵懶義式廚房',lat:25.0427,lng:121.5673,r:4.6,rc:2028,p:2,c:'義式',w:['Monday: 11:00 AM – 9:00 PM','Tuesday: 11:00 AM – 9:00 PM','Wednesday: 11:00 AM – 9:00 PM','Thursday: 11:00 AM – 9:00 PM','Friday: 11:00 AM – 9:00 PM','Saturday: 11:00 AM – 9:00 PM','Sunday: 11:00 AM – 9:00 PM'],addr:'忠孝東路五段71巷30號1樓',rev:'墨西哥雞肉義麵奶香濃郁，蘑菇燉飯也精彩，市政府站步行3分鐘，高評價CP。'},
+{name:'Miacucina 信義店 素食義式',lat:25.0362,lng:121.5671,r:4.3,rc:4665,p:2,c:'蔬食',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松壽路11號2樓（A11）',rev:'高人氣素食義式，青醬義麵美味，份量大，適合蔬食者。'},
+{name:'BURGER OUT',lat:25.0432,lng:121.5631,r:4.6,rc:1727,p:2,c:'漢堡',w:['Monday: Closed','Tuesday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Wednesday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Thursday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Friday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Saturday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM','Sunday: 11:30 AM – 2:30 PM, 5:00 – 8:30 PM'],addr:'忠孝東路四段553巷22弄2號',rev:'台北最好吃炸雞堡之一！肉汁四溢、外皮酥脆，楓糖雞翅也是絕品，週一公休。'},
+{name:'Awesome Burger',lat:25.0420,lng:121.5642,r:4.7,rc:2431,p:2,c:'漢堡',w:['Monday: Closed','Tuesday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Wednesday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Thursday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Friday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Saturday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM','Sunday: 11:30 AM – 2:00 PM, 5:00 – 8:20 PM'],addr:'基隆路一段190巷11號',rev:'評分超高精品漢堡，肉排鮮嫩料多，花生醬漢堡是名物，週一公休。'},
+{name:'BURNT BURGER SOCIAL CLUB',lat:25.0423,lng:121.5678,r:4.4,rc:381,p:0,c:'漢堡',w:['Monday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Tuesday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Wednesday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Thursday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Friday: 11:30 AM – 2:30 PM, 5:30 – 8:30 PM','Saturday: 12:00 – 9:00 PM','Sunday: 12:00 – 9:00 PM'],addr:'基隆路一段147巷54號',rev:'開放廚房美式漢堡，花生醬藍莓漢堡很特別，雞翅也讚，音樂氛圍好。'},
+
+// ═══ 早午餐 / 咖啡 ═══
+{name:'珍方早午餐（6:30開）',lat:25.0425,lng:121.5643,r:4.4,rc:3021,p:1,c:'早午餐',w:['Monday: 6:30 AM – 1:30 PM','Tuesday: 6:30 AM – 1:30 PM','Wednesday: 6:30 AM – 1:30 PM','Thursday: 6:30 AM – 1:30 PM','Friday: 6:30 AM – 1:30 PM','Saturday: 6:30 AM – 1:30 PM','Sunday: 6:30 AM – 1:30 PM'],addr:'忠孝東路四段559巷16弄17號',rev:'超人氣台式早餐，蛋餅吐司豆漿，排隊也值得，只開到下午一點半。'},
+{name:'安好食 大巨蛋（4.8分）',lat:25.0427,lng:121.5632,r:4.8,rc:1343,p:0,c:'早午餐',w:['Monday: 8:00 AM – 1:50 PM','Tuesday: 8:00 AM – 1:50 PM','Wednesday: 8:00 AM – 1:50 PM','Thursday: 8:00 AM – 1:50 PM','Friday: 8:00 AM – 1:50 PM','Saturday: 8:00 AM – 2:30 PM','Sunday: 8:00 AM – 2:30 PM'],addr:'忠孝東路四段553巷16弄4號',rev:'豬排三明治超美味，薯餅現炸，160元含飲料超值，只開早上，現金付款。'},
+{name:'Toast Chief 早餐',lat:25.0422,lng:121.5632,r:4.1,rc:606,p:1,c:'早午餐',w:['Monday: 7:30 AM – 2:00 PM','Tuesday: 7:30 AM – 2:00 PM','Wednesday: 7:30 AM – 2:00 PM','Thursday: 7:30 AM – 2:00 PM','Friday: 7:30 AM – 2:00 PM','Saturday: 7:30 AM – 2:00 PM','Sunday: 7:30 AM – 2:00 PM'],addr:'忠孝東路四段553巷6弄8-1號',rev:'小學課桌椅裝潢超可愛，波蘿包鮮肉蛋、肉排三明治都是招牌。'},
+{name:'M One Café A11',lat:25.0372,lng:121.5671,r:4.5,rc:2956,p:2,c:'早午餐',w:['Monday: 9:00 AM – 9:30 PM','Tuesday: 9:00 AM – 9:30 PM','Wednesday: 9:00 AM – 9:30 PM','Thursday: 9:00 AM – 9:30 PM','Friday: 9:00 AM – 10:00 PM','Saturday: 9:00 AM – 10:00 PM','Sunday: 9:00 AM – 9:30 PM'],addr:'松壽路11號3樓',rev:'美式蛋班尼迪克超讚，酥脆培根現做，龍蝦堡期間限定，服務親切。'},
+{name:'三亞米早午餐・咖啡',lat:25.0376,lng:121.5755,r:4.8,rc:506,p:2,c:'早午餐',w:['Monday: 8:30 AM – 5:00 PM','Tuesday: 8:30 AM – 5:00 PM','Wednesday: Closed','Thursday: 8:30 AM – 5:00 PM','Friday: 8:30 AM – 5:00 PM','Saturday: 8:30 AM – 5:00 PM','Sunday: 8:30 AM – 5:00 PM'],addr:'松德路119號1樓',rev:'環境明亮服務親切，異國三明治意外好吃，兩人600元以內，週三公休。'},
+{name:'CURISTA COFFEE 市政府店',lat:25.0416,lng:121.5641,r:4.6,rc:1825,p:2,c:'咖啡廳',w:['Monday: 7:30 AM – 8:00 PM','Tuesday: 7:30 AM – 8:00 PM','Wednesday: 7:30 AM – 8:00 PM','Thursday: 7:30 AM – 8:00 PM','Friday: 7:30 AM – 8:00 PM','Saturday: 7:30 AM – 8:00 PM','Sunday: 7:30 AM – 8:00 PM'],addr:'忠孝東路四段563號1樓',rev:'台北人氣咖啡，抹茶拿鐵極佳，離聯合報超近。'},
+{name:'CuppaCuppa Cafe',lat:25.0422,lng:121.5637,r:4.8,rc:401,p:0,c:'咖啡廳',w:['Monday: 7:30 AM – 5:30 PM','Tuesday: 7:30 AM – 5:30 PM','Wednesday: 7:30 AM – 5:30 PM','Thursday: 7:30 AM – 5:30 PM','Friday: 7:30 AM – 5:30 PM','Saturday: 9:00 AM – 5:00 PM','Sunday: 9:00 AM – 5:00 PM'],addr:'忠孝東路四段559巷14號',rev:'超高評分外帶咖啡小店，焦糖拿鐵和紅糖拿鐵超受歡迎，快速便宜，早上就開。'},
+{name:'Café by U',lat:25.0441,lng:121.5629,r:4.9,rc:122,p:0,c:'咖啡廳',w:['Monday: 10:30 AM – 7:00 PM','Tuesday: Closed','Wednesday: 10:30 AM – 7:00 PM','Thursday: 10:30 AM – 7:00 PM','Friday: 10:30 AM – 7:00 PM','Saturday: 10:30 AM – 7:00 PM','Sunday: 10:30 AM – 7:00 PM'],addr:'忠孝東路四段553巷42-1號1樓',rev:'藝廊咖啡隱藏版，桂花拿鐵是亮點，評分近滿分，週二公休。'},
+{name:'Buna Cafe 信義',lat:25.0332,lng:121.5594,r:4.6,rc:3764,p:2,c:'咖啡廳',w:['Monday: 9:00 AM – 12:00 AM','Tuesday: 9:00 AM – 12:00 AM','Wednesday: 9:00 AM – 12:00 AM','Thursday: 9:00 AM – 12:00 AM','Friday: 9:00 AM – 12:00 AM','Saturday: 8:00 AM – 12:00 AM','Sunday: 8:00 AM – 12:00 AM'],addr:'信義路四段415之3號',rev:'鄰近101的人氣咖啡館，可久坐，餐點新鮮實惠，聚會聊天都適合。'},
+{name:'Café Kitsuné BELLAVITA',lat:25.0398,lng:121.5675,r:4.6,rc:640,p:0,c:'咖啡廳',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松仁路28號2樓（BellaVita）',rev:'法國時尚品牌咖啡廳，羅馬諾咖啡加可頌，下午悠閒愜意。'},
+
+// ═══ 西式/創意 ═══
+{name:'福喜 Lucky Eat 古巴三明治',lat:25.0415,lng:121.5685,r:4.7,rc:3249,p:0,c:'西式',w:['Monday: 11:00 AM – 8:00 PM','Tuesday: 11:00 AM – 8:00 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 8:30 PM','Friday: 11:00 AM – 8:30 PM','Saturday: 11:00 AM – 8:30 PM','Sunday: 11:00 AM – 8:30 PM'],addr:'忠孝東路五段71巷32號1樓',rev:'古巴三明治超鮮美，200元含薯條冰茶套餐，信義區高CP值西式。'},
+{name:'30 Thirty 早午餐',lat:25.0398,lng:121.5624,r:4.4,rc:1891,p:2,c:'西式',w:['Monday: Closed','Tuesday: Closed','Wednesday: 9:00 AM – 5:30 PM','Thursday: 9:00 AM – 5:30 PM','Friday: 9:00 AM – 5:30 PM','Saturday: 9:00 AM – 5:30 PM','Sunday: 9:00 AM – 5:30 PM'],addr:'一縣路26巷17號',rev:'威士忌骨髓、特色麵包驚喜，食材新鮮，週一二公休。'},
+{name:'Hërs bistro 她/的餐酒',lat:25.0432,lng:121.5631,r:4.1,rc:1095,p:2,c:'西式',w:['Monday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Tuesday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Wednesday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Thursday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Friday: 12:00 – 2:30 PM, 5:00 – 9:00 PM','Saturday: 11:30 AM – 9:00 PM','Sunday: 11:30 AM – 9:00 PM'],addr:'忠孝東路四段553巷22弄4號',rev:'西式餐酒館，義麵燉飯都精緻，可攜寵物，創意飲品適合拍照。'},
+{name:'WHAT\'S LA SAUCE?（晚餐）',lat:25.0422,lng:121.5633,r:4.9,rc:293,p:0,c:'創意料理',w:['Monday: Closed','Tuesday: Closed','Wednesday: 5:00 – 10:30 PM','Thursday: 5:00 – 10:30 PM','Friday: 5:00 – 11:00 PM','Saturday: 5:00 – 11:00 PM','Sunday: 5:00 – 10:30 PM'],addr:'忠孝東路四段553巷6弄12號1樓',rev:'評分超高的創意融合餐廳，只開晚餐，週一二公休。'},
+{name:'gubami Social 亞洲融合',lat:25.0363,lng:121.5669,r:4.4,rc:883,p:0,c:'創意料理',w:['Monday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Tuesday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Wednesday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Thursday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Friday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Saturday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Sunday: 12:00 – 3:00 PM, 6:00 – 10:00 PM'],addr:'松壽路9號6樓',rev:'陳嵐舒主廚，法式台菜跨界，牛肉麵和發酵豆腐麵包滋味爆炸。'},
 {name:'YABI KITCHEN Dream Plaza',lat:25.0396,lng:121.5655,r:4.8,rc:735,p:0,c:'創意料理',w:['Monday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Tuesday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Wednesday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Thursday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Friday: 11:00 AM – 3:00 PM, 5:00 – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松高路11號4樓',rev:'咖啡豬肋排、泰北炸魚是亮點，歐式裝潢，7道菜不到2300元超值。'},
 
-// ── 便當外帶 ───────────────────────────────────────────────────
-{name:'江家 燒肉飯・香腸便當',lat:25.0250,lng:121.5691,r:4.1,rc:182,p:1,c:'便當',w:['Monday: 11:30 AM – 8:00 PM','Tuesday: 11:30 AM – 8:00 PM','Wednesday: 11:30 AM – 8:00 PM','Thursday: 11:30 AM – 8:00 PM','Friday: 11:30 AM – 8:00 PM','Saturday: 11:30 AM – 5:00 PM','Sunday: Closed'],addr:'松仁路236號',rev:'招牌便當80元，台式滷肉飯是靈魂食物，上班族最愛，日曜公休。'},
-{name:'川仔精緻料理便當',lat:25.0276,lng:121.5683,r:4.5,rc:179,p:0,c:'便當',w:['Monday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Tuesday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Wednesday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Thursday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Friday: 11:30 AM – 2:00 PM, 5:30 – 7:50 PM','Saturday: Closed','Sunday: Closed'],addr:'松仁路190號',rev:'夫妻精緻便當，食材新鮮，比商場便宜又好吃，週六日不開。'},
-{name:'虎味食堂・便當',lat:25.0285,lng:121.5639,r:4.3,rc:143,p:0,c:'便當',w:['Monday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Tuesday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Wednesday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Thursday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Friday: 11:00 AM – 2:30 PM, 5:00 – 8:00 PM','Saturday: 11:00 AM – 3:00 PM','Sunday: Closed'],addr:'莊敬路325巷13號',rev:'排骨飯現炸必點，四道配菜份量足，130元在信義區非常划算。'},
-{name:'鷺野烤肉飯信義區',lat:25.0359,lng:121.5779,r:4.3,rc:259,p:1,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Tuesday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Wednesday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Thursday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Friday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Saturday: 10:30 AM – 2:00 PM, 5:00 – 7:30 PM','Sunday: Closed'],addr:'信義路六段110號1樓',rev:'烤肉飯份量霸氣，五花肉堆滿盤，外帶為主，C/P值極高，常快速售完。'},
-{name:'三亞米早午餐・咖啡',lat:25.0376,lng:121.5755,r:4.8,rc:506,p:2,c:'早午餐',w:['Monday: 8:30 AM – 5:00 PM','Tuesday: 8:30 AM – 5:00 PM','Wednesday: Closed','Thursday: 8:30 AM – 5:00 PM','Friday: 8:30 AM – 5:00 PM','Saturday: 8:30 AM – 5:00 PM','Sunday: 8:30 AM – 5:00 PM'],addr:'松德路119號1樓',rev:'環境明亮、服務親切，異國三明治意外好吃，兩人600元以內，週三公休。'},
+// ═══ 火鍋 ═══
+{name:'初衷小鹿 Deer\'s Hotpot',lat:25.0424,lng:121.5635,r:4.6,rc:1640,p:3,c:'火鍋',w:['Monday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Tuesday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Wednesday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Thursday: 12:00 – 3:00 PM, 6:00 – 10:00 PM','Friday: 12:00 – 3:00 PM, 5:30 – 10:30 PM','Saturday: 11:30 AM – 3:00 PM, 5:30 – 10:30 PM','Sunday: 11:30 AM – 3:00 PM, 5:30 – 10:30 PM'],addr:'忠孝東路四段553巷6弄15號',rev:'個人精緻涮涮鍋，台灣黑豬與美牛都精彩，甜點是認真的甜點店水準，很推！'},
+{name:'湯吉鍋物 TANG JI',lat:25.0405,lng:121.5627,r:4.8,rc:1463,p:0,c:'火鍋',w:['Monday: Closed','Tuesday: 11:30 AM – 3:00 PM, 5:30 – 9:30 PM','Wednesday: 11:30 AM – 3:00 PM, 5:30 – 9:30 PM','Thursday: 11:30 AM – 3:00 PM, 5:30 – 9:30 PM','Friday: 11:30 AM – 3:00 PM, 5:30 – 9:30 PM','Saturday: 11:30 AM – 3:00 PM, 5:30 – 9:30 PM','Sunday: 11:30 AM – 3:00 PM, 5:30 – 9:30 PM'],addr:'一縣路50巷18號',rev:'個人鍋物，蔬菜吃到飽，海鮮肉品品質好，環境清潔，價格信義區超值，週一公休。'},
 
-// ── 台式正餐(其他) ────────────────────────────────────────────
-{name:'Supreme Salmon 美威鮭魚 時代店',lat:25.0396,lng:121.5653,r:4.4,rc:574,p:2,c:'日式',w:['Monday: 11:00 AM – 10:00 PM','Tuesday: 11:00 AM – 10:00 PM','Wednesday: 11:00 AM – 10:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'松高路11號B2',rev:'鮭魚義大利麵套餐鮮嫩，座位開放舒適，信義商圈日式輕食好選擇。'},
-{name:'時時香 Rice Bar 微風南山',lat:25.0343,lng:121.5661,r:4.0,rc:1672,p:2,c:'台式小吃',w:['Monday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Tuesday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Wednesday: 11:00 AM – 3:00 PM, 5:00 – 9:30 PM','Thursday: 11:00 AM – 3:00 PM, 5:00 – 10:00 PM','Friday: 11:00 AM – 3:00 PM, 5:00 – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 9:30 PM'],addr:'松智路17號6樓',rev:'台中194香米飯搭各式料理，豬油飯是靈魂，炸豆腐umami爆發，服務親切。'},
-{name:'梨谷 韓式鐵板炭火烤肉 ATT',lat:25.0353,lng:121.5659,r:4.9,rc:4001,p:0,c:'韓式',w:['Monday: 11:00 AM – 10:00 PM','Tuesday: 11:00 AM – 10:00 PM','Wednesday: 11:00 AM – 10:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 11:00 PM','Saturday: 11:00 AM – 11:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'松壽路12號5樓',rev:'信義區評分最高韓式之一，起司蒸蛋絕配，石鍋拌飯超讚，服務超好。'},
-{name:'Getpower 給力盒子 松菸店',lat:25.0420,lng:121.5632,r:4.2,rc:391,p:0,c:'便當',w:['Monday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Tuesday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Wednesday: 10:30 AM – 2:00 PM, 3:30 – 7:30 PM','Thursday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Friday: 10:30 AM – 2:00 PM, 3:30 – 7:20 PM','Saturday: Closed','Sunday: Closed'],addr:'忠孝東路四段553巷2弄11號',rev:'健康餐盒標示熱量，蔬菜超新鮮不馬虎，份量比一般健康便當大，週末公休。'},
+// ═══ 蔬食 ═══
+{name:'BaganHood 全蔬食',lat:25.0443,lng:121.5635,r:4.5,rc:1953,p:2,c:'蔬食',w:['Monday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Tuesday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Wednesday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Thursday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Friday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Saturday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM','Sunday: 11:30 AM – 4:00 PM, 5:00 – 10:00 PM'],addr:'忠孝東路四段553巷46弄11號',rev:'全蔬食餐廳，菇菇炸雞口感神似真雞，白花菜腰果醬是招牌，份量超大。'},
+
+// ═══ 自助 ═══
+{name:'URBAN PARADISE 信義店',lat:25.0397,lng:121.5659,r:4.8,rc:5341,p:0,c:'自助',w:['Monday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Tuesday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Wednesday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Thursday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Friday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM','Saturday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM','Sunday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM'],addr:'松高路11號5樓',rev:'信義區評分最高自助餐廳，海鮮創意料理，無限暢飲，需預約，適合聚會。'},
+{name:'Eatogether 信義ATT4FUN',lat:25.0353,lng:121.5661,r:4.2,rc:7229,p:3,c:'自助',w:['Monday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Tuesday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Wednesday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Thursday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Friday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:00 PM','Saturday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM','Sunday: 11:30 AM – 2:00 PM, 2:30 – 4:30 PM, 5:30 – 9:30 PM'],addr:'松壽路12號ATT 4 FUN百貨6樓',rev:'大型自助吧，龍蝦鮭魚全都有，CP值高，ATT 4 FUN頂樓，評論數超多。'},
+
+// ═══ 新增：雞肉飯/小吃 ═══
+{name:'芝香雞肉飯・涼麵 信義',lat:25.0412,lng:121.5683,r:4.0,rc:2270,p:1,c:'台式小吃',w:['Monday: 11:00 AM – 2:00 PM, 3:00 PM – 5:00 AM','Tuesday: 11:00 AM – 2:00 PM, 3:00 PM – 5:00 AM','Wednesday: 11:00 AM – 2:00 PM, 3:00 PM – 5:00 AM','Thursday: 11:00 AM – 2:00 PM, 3:00 PM – 5:00 AM','Friday: 11:00 AM – 2:00 PM, 3:00 PM – 5:00 AM','Saturday: 9:30 PM – 5:00 AM','Sunday: 11:00 AM – 2:00 PM, 3:00 PM – 5:00 AM'],addr:'忠孝東路五段143號1樓',rev:'雞肉飯滷肉飯都好吃，宵夜開到凌晨5點！加班族、夜貓子必備，超便宜。'},
+{name:'喜滿罐米線（永吉店）',lat:25.0422,lng:121.5686,r:4.8,rc:133,p:0,c:'台式小吃',w:['Monday: 11:00 AM – 10:00 PM','Tuesday: 11:00 AM – 10:00 PM','Wednesday: 11:00 AM – 10:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'永吉路30巷158號1樓',rev:'瓦罐米線湯頭濃郁，撕曆本點菜的特色設計超有趣，市政府站步行可達。'},
+{name:'好吃雞肉 信義店',lat:25.0387,lng:121.5807,r:4.1,rc:147,p:0,c:'便當',w:['Monday: 10:30 AM – 1:30 PM, 4:30 – 8:00 PM','Tuesday: 10:30 AM – 1:30 PM, 4:30 – 8:00 PM','Wednesday: 10:30 AM – 1:30 PM, 4:30 – 8:00 PM','Thursday: 10:30 AM – 1:30 PM, 4:30 – 8:00 PM','Friday: 10:30 AM – 1:30 PM, 4:30 – 8:00 PM','Saturday: 10:30 AM – 2:00 PM, 4:30 – 7:30 PM','Sunday: Closed'],addr:'福德街84巷21號',rev:'咖哩雞腿嫩而不乾，配菜豐富，日曜公休，信義101旁隱藏雞肉便當。'},
+{name:'和記 嘉義雞肉飯',lat:25.0442,lng:121.5742,r:4.0,rc:114,p:1,c:'台式小吃',w:['Monday: Closed','Tuesday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM','Wednesday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM','Thursday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM','Friday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM','Saturday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM','Sunday: 11:30 AM – 2:00 PM, 5:00 – 8:00 PM'],addr:'永吉路278巷37弄1號',rev:'雞肉飯滷肉飯都美味，配菜豐盛，老闆夫婦親切，週一公休。'},
+{name:'旅營雞肉本舖（海南雞）',lat:25.0469,lng:121.5779,r:4.2,rc:635,p:0,c:'台式小吃',w:['Monday: 11:00 AM – 10:00 PM','Tuesday: 11:00 AM – 10:00 PM','Wednesday: 11:00 AM – 10:00 PM','Thursday: 11:00 AM – 10:00 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'松山路145號',rev:'台北最好吃的海南雞飯之一！雞肉嫩、醬汁香，老闆會英文，全天候供應。'},
+{name:'車庫米粉湯（5元粉！）',lat:25.0372,lng:121.5768,r:5.0,rc:25,p:0,c:'台式小吃',w:['Monday: 11:30 AM – 1:30 PM, 5:30 – 7:30 PM','Tuesday: 11:30 AM – 1:30 PM, 5:30 – 7:30 PM','Wednesday: 11:30 AM – 1:30 PM, 5:30 – 7:30 PM','Thursday: 11:30 AM – 1:30 PM, 5:30 – 7:30 PM','Friday: Closed','Saturday: Closed','Sunday: Closed'],addr:'虎林街222巷10號',rev:'米粉湯25元！豬頭湯60元，老闆超熱情，乾麵口感絕佳，信義區超低調隱藏版。'},
+{name:'芋頭米粉湯（米其林推薦）',lat:25.0356,lng:121.5757,r:4.5,rc:398,p:1,c:'台式小吃',w:['Monday: 10:00 AM – 2:30 PM','Tuesday: 10:00 AM – 2:30 PM','Wednesday: 10:00 AM – 2:30 PM','Thursday: 10:00 AM – 2:30 PM','Friday: 10:00 AM – 2:30 PM','Saturday: Closed','Sunday: Closed'],addr:'虎林街232巷75號',rev:'米其林推薦！芋頭米粉湯湯底濃郁不油，芋頭鬆軟，小菜豐富，只開午餐，週末公休。'},
+{name:'食徒頂即鍋（永吉店）',lat:25.0425,lng:121.5683,r:4.6,rc:402,p:0,c:'火鍋',w:['Monday: 11:00 AM – 2:00 PM, 4:00 – 11:00 PM','Tuesday: 11:00 AM – 2:00 PM, 4:00 – 11:00 PM','Wednesday: 11:00 AM – 2:00 PM, 4:00 – 11:00 PM','Thursday: 11:00 AM – 2:00 PM, 4:00 – 11:00 PM','Friday: 11:00 AM – 2:00 PM, 4:00 – 11:00 PM','Saturday: 11:00 AM – 11:00 PM','Sunday: 11:00 AM – 11:00 PM'],addr:'永吉路30巷158弄9號1樓',rev:'芋頭雞湯鍋超好喝，蔬菜豆花吃到飽，乾拌麵特色，永吉巷弄隱藏鍋物，午餐有開。'},
+{name:'小小麥 台北永吉店',lat:25.0422,lng:121.5681,r:4.5,rc:797,p:0,c:'日式',w:['Monday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM','Tuesday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM','Wednesday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM','Thursday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM','Friday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM','Saturday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM','Sunday: 12:00 – 2:00 PM, 5:30 PM – 12:00 AM'],addr:'永吉路30巷158弄16號1樓',rev:'名太子烏龍和煙燻鮭魚肚串超讚！日式居酒屋氛圍，布丁也必點，永吉巷熱門店。'},
+// ═══ 新增：微風信義/忠孝五段周邊 ═══
+{name:'K Plan 韓金筍（微風信義4樓）',lat:25.0405,lng:121.5670,r:4.5,rc:1470,p:0,c:'韓式',w:['Monday: 11:00 AM – 8:30 PM','Tuesday: 11:00 AM – 8:30 PM','Wednesday: 11:00 AM – 8:30 PM','Thursday: 11:00 AM – 9:00 PM','Friday: 11:00 AM – 9:00 PM','Saturday: 11:00 AM – 9:00 PM','Sunday: 11:00 AM – 8:30 PM'],addr:'忠孝東路五段68號4樓（微風信義）',rev:'正宗감자탕豬骨湯，肉軟骨香，小菜可無限續，微風信義商圈好評韓食。'},
+{name:'鶴克 TSUKUMI 日本料理（微風信義）',lat:25.0406,lng:121.5669,r:4.3,rc:1662,p:2,c:'日式',w:['Monday: 11:00 AM – 9:30 PM','Tuesday: 11:00 AM – 9:30 PM','Wednesday: 11:00 AM – 9:30 PM','Thursday: 11:00 AM – 9:30 PM','Friday: 11:00 AM – 10:00 PM','Saturday: 11:00 AM – 10:00 PM','Sunday: 11:00 AM – 10:00 PM'],addr:'忠孝東路五段68號4樓（微風信義）',rev:'高質感日本料理套餐，炸天婦羅、鰻魚飯都有水準，JCB卡九折優惠。'},
+{name:'老井極上燒肉 信義店',lat:25.0362,lng:121.5692,r:4.9,rc:11802,p:0,c:'日式',w:['Monday: 11:00 AM – 2:00 AM','Tuesday: 11:00 AM – 2:00 AM','Wednesday: 11:00 AM – 2:00 AM','Thursday: 11:00 AM – 2:00 AM','Friday: 11:00 AM – 2:00 AM','Saturday: 11:00 AM – 2:00 AM','Sunday: 11:00 AM – 2:00 AM'],addr:'松仁路101號B1',rev:'信義區評分最高餐廳！A5和牛套餐物超所值，凌晨2點都有開，服務超貼心。'},
+{name:'Lazy Pasta 慵懶義式廚房 忠孝店',lat:25.0427,lng:121.5673,r:4.6,rc:2028,p:2,c:'義式',w:['Monday: 11:00 AM – 9:00 PM','Tuesday: 11:00 AM – 9:00 PM','Wednesday: 11:00 AM – 9:00 PM','Thursday: 11:00 AM – 9:00 PM','Friday: 11:00 AM – 9:00 PM','Saturday: 11:00 AM – 9:00 PM','Sunday: 11:00 AM – 9:00 PM'],addr:'忠孝東路五段71巷30號1樓',rev:'墨西哥雞肉義麵奶香濃郁，蘑菇燉飯也精彩，市政府站步行3分鐘，高評價。'},
 ];
 
-// Compute distances
 const restaurants=DATA.map(r=>({...r,distance:dist(r.lat,r.lng)}));
 let filters={cuisine:'all',price:'all',dist:'all',rating:'all'};
-
-function setFilter(type,value,btn){
-  filters[type]=value;
-  document.querySelectorAll('[data-filter="'+type+'"]').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCards();
-}
-
-function matches(r){
-  if(filters.cuisine!=='all'&&r.c!==filters.cuisine)return false;
-  if(filters.price!=='all'){
-    if(filters.price==='0'){if(r.p!==0&&r.p!==null)return false}
-    else{if(r.p!==parseInt(filters.price))return false}
-  }
-  if(filters.dist!=='all'&&r.distance>parseInt(filters.dist))return false;
-  if(filters.rating!=='all'&&r.r<parseFloat(filters.rating))return false;
-  return true;
-}
-
+function setFilter(type,value,btn){filters[type]=value;document.querySelectorAll('[data-filter="'+type+'"]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCards()}
+function matches(r){if(filters.cuisine!=='all'&&r.c!==filters.cuisine)return false;if(filters.price!=='all'){if(filters.price==='0'){if(r.p!==0&&r.p!==null)return false}else{if(r.p!==parseInt(filters.price))return false}}if(filters.dist!=='all'&&r.distance>parseInt(filters.dist))return false;if(filters.rating!=='all'&&r.r<parseFloat(filters.rating))return false;return true}
 function renderCards(){
   const grid=document.getElementById('grid');
   grid.querySelectorAll('.card').forEach(c=>c.remove());
@@ -280,57 +301,24 @@ function renderCards(){
   document.getElementById('emptyState').style.display=vis.length===0?'block':'none';
   const emp=document.getElementById('emptyState');
   vis.forEach(r=>{
-    const pi=priceInfo(r.p);
-    const op=isOpen(r.w);
-    const h=todayHours(r.w);
+    const pi=priceInfo(r.p),op=isOpen(r.w),h=todayH(r.w);
     const dc=r.distance<=300?'#4caf7d':r.distance<=500?'#f5a623':'#8a8580';
     const card=document.createElement('div');
-    card.className='card';
-    card.onclick=()=>openCard(r);
-    card.innerHTML=`
-      <div class="card-header">
-        <div class="card-name">${r.name}</div>
-        <div class="rating-badge"><span class="rating-number">${r.r}</span><span class="rating-count">${r.rc.toLocaleString()}評</span></div>
-      </div>
-      <div class="card-tags">
-        <span class="tag tag-cuisine">${r.c}</span>
-        <span class="tag ${pi.cls}">${pi.text}</span>
-        <span class="distance-tag" style="color:${dc}">📍${r.distance}m</span>
-        ${op!==null?`<span class="tag" style="background:rgba(${op?'76,175,125':'224,82,82'},.1);color:${op?'#4caf7d':'#e05252'};border:1px solid rgba(${op?'76,175,125':'224,82,82'},.2)"><span class="open-dot ${op?'open':'closed'}"></span>${op?'營業中':'未開'}</span>`:''}
-      </div>
-      ${h?`<div class="card-hours">🕐 今日：${h}</div>`:''}
-      <div class="card-review">${r.rev}</div>
-      <a class="gmaps-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name+' '+r.addr)}" target="_blank" onclick="event.stopPropagation()">🗺 Google Maps</a>
-    `;
+    card.className='card';card.onclick=()=>openCard(r);
+    card.innerHTML=`<div class="card-header"><div class="card-name">${r.name}</div><div class="rating-badge"><span class="rating-number">${r.r}</span><span class="rating-count">${r.rc.toLocaleString()}評</span></div></div><div class="card-tags"><span class="tag tag-cuisine">${r.c}</span><span class="tag ${pi.cls}">${pi.text}</span><span class="distance-tag" style="color:${dc}">📍${r.distance}m</span>${op!==null?`<span class="tag" style="background:rgba(${op?'76,175,125':'224,82,82'},.1);color:${op?'#4caf7d':'#e05252'};border:1px solid rgba(${op?'76,175,125':'224,82,82'},.2)"><span class="open-dot ${op?'open':'closed'}"></span>${op?'營業中':'未開'}</span>`:''}</div>${h?`<div class="card-hours">🕐 今日：${h}</div>`:''}<div class="card-review">${r.rev}</div><a class="gmaps-link" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name+' '+r.addr)}" target="_blank" onclick="event.stopPropagation()">🗺 Google Maps</a>`;
     grid.insertBefore(card,emp);
   });
 }
-
 function openCard(r,isRandom=false){
-  const pi=priceInfo(r.p);
-  const op=isOpen(r.w);
-  const h=todayHours(r.w);
+  const pi=priceInfo(r.p),op=isOpen(r.w),h=todayH(r.w);
   document.getElementById('modalEyebrow').textContent=isRandom?'🎲 今天就吃這間！':'🍜 餐廳資訊';
   document.getElementById('modalName').textContent=r.name;
-  document.getElementById('modalDetails').innerHTML=`
-    <div class="modal-row"><span class="modal-row-label">類型</span>${r.c}</div>
-    <div class="modal-row"><span class="modal-row-label">評分</span>⭐ ${r.r} · ${r.rc.toLocaleString()} 則評論</div>
-    <div class="modal-row"><span class="modal-row-label">價位</span>${pi.text}</div>
-    <div class="modal-row"><span class="modal-row-label">距離</span>直線約 ${r.distance}m</div>
-    <div class="modal-row"><span class="modal-row-label">今日</span>${h||'未知'} ${op!==null?(op?'✅ 營業中':'❌ 目前未開'):''}</div>
-    <div class="modal-row"><span class="modal-row-label">地址</span>${r.addr}</div>
-  `;
+  document.getElementById('modalDetails').innerHTML=`<div class="modal-row"><span class="modal-row-label">類型</span>${r.c}</div><div class="modal-row"><span class="modal-row-label">評分</span>⭐ ${r.r} · ${r.rc.toLocaleString()} 則評論</div><div class="modal-row"><span class="modal-row-label">價位</span>${pi.text}</div><div class="modal-row"><span class="modal-row-label">距離</span>直線約 ${r.distance}m</div><div class="modal-row"><span class="modal-row-label">今日</span>${h||'未知'} ${op!==null?(op?'✅ 營業中':'❌ 目前未開'):''}</div><div class="modal-row"><span class="modal-row-label">地址</span>${r.addr}</div>`;
   document.getElementById('modalReview').textContent=`"${r.rev}"`;
   document.getElementById('modalMapsBtn').onclick=()=>window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.name+' '+r.addr),'_blank');
   document.getElementById('modalOverlay').classList.add('show');
 }
-
-function pickRandom(){
-  const vis=restaurants.filter(matches);
-  if(!vis.length){alert('目前沒有符合條件的餐廳！');return}
-  openCard(vis[Math.floor(Math.random()*vis.length)],true);
-}
-
+function pickRandom(){const vis=restaurants.filter(matches);if(!vis.length){alert('目前沒有符合條件的餐廳！');return}openCard(vis[Math.floor(Math.random()*vis.length)],true)}
 function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalBtn()}
 function closeModalBtn(){document.getElementById('modalOverlay').classList.remove('show')}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalBtn()});
